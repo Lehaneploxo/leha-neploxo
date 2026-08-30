@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Random Bots</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #1f1f1f;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .input-label {
+      margin-bottom: 10px;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    .input-label label {
+      color: #ffffff;
+    }
+
+    input {
+      background-color: #333333;
+      color: #ffffff;
+      border: 1px solid #666666;
+      border-radius: 5px;
+      padding: 5px;
+      width: 100%;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .output {
+      margin-top: 20px;
+      font-family: monospace;
+      font-size: 14px;
+      color: #ffffff;
+      background-color: #333333;
+      padding: 10px;
+      border-radius: 5px;
+      width: 100%;
+      overflow-y: scroll;
+      max-height: 200px;
+    }
+
+    #iterationCount {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    #worldOutput {
+      margin-top: 10px;
+    }
+
+    @media screen and (min-width: 768px) {
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Добро пожаловать в одномерный мир ботов!</h1>
+    <p>В этом мире боты - это объекты, их мир это массив. Каждый бот при рождении обладает уникальным идентификатором и случайной энергией.</p>
+    <p>Если количество ботов в мире достигает максимального значения, то при появлении нового бота самый слабый из них погибает.</p>
+    <div id="iterationCount">Итерация: 0</div>
+    <div class="input-label">
+      <label>Максимальное количество ботов: <input type="number" id="maxBotsInput" value="3"></label>
+    </div>
+    <div class="input-label">
+      <label>Скорость рождения (мс): <input type="number" id="birthRateInput" value="1000"></label>
+    </div>
+    <button id="startButton">Старт</button>
+    <button id="stopButton">Стоп</button>
+    <button id="clearButton">Очистить</button>
+    <div class="output">
+      <div id="worldOutput"></div>
+    </div>
+    <p>Наблюдайте, как боты взаимодействуют друг с другом в этом мире, и попробуйте изменить параметры симуляции, чтобы увидеть, как это повлияет на их эволюцию!</p>
+  </div>
+
+  <script>
+    const world = [];
+    let maxBots = 3;
+    let birthRate = 1000;
+    let i = 0;
+    let iterationCount = 0;
+    let intervalId;
+
+    function iPlusOne() {
+      return i++;
+    }
+
+    function randomNum() {
+      return Math.floor(Math.random() * 100) + 1;
+    }
+
+    function randomBot() {
+      iPlusOne();
+      return { id: i, energy: randomNum() };
+    }
+
+    function worldBots() {
+      if (world.length >= maxBots) {
+        world.splice(world.findIndex(obj => obj.energy === Math.min(...world.map(obj => obj.energy))), 1);
+      } else {
+        world.push(randomBot());
+      }
+      document.getElementById('worldOutput').textContent = JSON.stringify(world);
+      document.getElementById('iterationCount').textContent = `Итерация: ${++iterationCount}`;
+      
+      // Вывод в консоль
+      console.log(`Итерация: ${iterationCount}`, JSON.stringify(world));
+    }
+
+    function startSimulation() {
+      clearInterval(intervalId);
+      maxBots = parseInt(document.getElementById('maxBotsInput').value, 10);
+      birthRate = parseInt(document.getElementById('birthRateInput').value, 10);
+      world.length = 0;
+      i = 0;
+      iterationCount = 0;
+      document.getElementById('worldOutput').textContent = '';
+      document.getElementById('iterationCount').textContent = 'Итерация: 0';
+      worldBots();
+      intervalId = setInterval(worldBots, birthRate);
+    }
+
+    function stopSimulation() {
+      clearInterval(intervalId);
+      intervalId = null;
+    }
+
+    function clearOutput() {
+      world.length = 0;
+      document.getElementById('worldOutput').textContent = '';
+      document.getElementById('iterationCount').textContent = 'Итерация: 0';
+    }
+
+    document.getElementById('startButton').addEventListener('click', startSimulation);
+    document.getElementById('stopButton').addEventListener('click', stopSimulation);
+    document.getElementById('clearButton').addEventListener('click', clearOutput);
+  </script>
+</body>
+</html>
+

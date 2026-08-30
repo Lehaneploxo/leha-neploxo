@@ -101,6 +101,7 @@
     initFooterYear();
     if (typeof window.renderProjects === "function") window.renderProjects();
     if (typeof window.renderProjectPage === "function") window.renderProjectPage();
+    if (typeof window.renderWorldPage === "function") window.renderWorldPage();
   });
 
   /* ------------------------------------------------------------- intro */

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Random Bots</title>
+  <style>
+    body {
+      background-color: #1f1f1f;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+    }
+
+    .input-label {
+      margin-bottom: 10px;
+      color: #ffffff;
+    }
+
+    .input-label label {
+      color: #ffffff;
+    }
+
+    input {
+      background-color: #333333;
+      color: #ffffff;
+      border: 1px solid #666666;
+      border-radius: 5px;
+      padding: 5px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .output {
+      margin-top: 20px;
+      width: 80%;
+      height: 200px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    #iterationCount {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    #consoleOutput {
+      margin-top: 20px;
+      width: 80%;
+      height: 150px;
+      background-color: #333333;
+      color: #00ff00;
+      overflow-y: auto;
+      padding: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Добро пожаловать в мир моих ботов!</h1>
+    <p>В этом мире боты - это объекты, их мир это массив. Каждый бот при рождении обладает уникальным идентификатором и случайной энергией.</p>
+    <p>Если количество ботов в мире достигает максимального значения, то при появлении нового бота самый слабый из них погибает.</p>
+    <div id="iterationCount">Итерация: 0</div>
+    <div class="input-label">
+      <label>Максимальное количество ботов: <input type="number" id="maxBotsInput" value="3"></label>
+    </div>
+    <div class="input-label">
+      <label>Скорость рождения (мс): <input type="number" id="birthRateInput" value="100"></label>
+    </div>
+    <button id="startButton">Старт</button>
+    <button id="stopButton">Стоп</button>
+    <button id="clearButton">Очистить</button>
+    <div class="output">
+      <canvas id="worldCanvas" width="800" height="200"></canvas>
+    </div>
+    <div id="consoleOutput">Консоль:</div>
+  </div>
+
+  <script>
+    const world = [];
+    let maxBots = 3;
+    let birthRate = 100;
+    let i = 0;
+    let iterationCount = 0;
+    let intervalId;
+    const canvas = document.getElementById('worldCanvas');
+    const ctx = canvas.getContext('2d');
+    const consoleOutput = document.getElementById('consoleOutput');
+
+    function logToConsole(message) {
+      consoleOutput.innerHTML += message + '<br>';
+      consoleOutput.scrollTop = consoleOutput.scrollHeight;
+    }
+
+    function randomNum() {
+      return Math.floor(Math.random() * 100) + 1;
+    }
+
+    function randomBot() {
+      i++;
+      return { id: i, energy: randomNum(), x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: Math.random() - 0.5, vy: Math.random() - 0.5 };
+    }
+
+    function drawBot(bot) {
+      ctx.beginPath();
+      ctx.arc(bot.x, bot.y, 15, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.closePath();
+      ctx.fillStyle = '#000000';
+      ctx.fillText(bot.id.toString(), bot.x - 5, bot.y + 5);
+    }
+
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function updateBots() {
+      world.forEach(bot => {
+        bot.x += bot.vx;
+        bot.y += bot.vy;
+        if (bot.x < 0 || bot.x > canvas.width) bot.vx *= -1;
+        if (bot.y < 0 || bot.y > canvas.height) bot.vy *= -1;
+      });
+    }
+
+    function worldBots() {
+      clearCanvas();
+      updateBots();
+      if (world.length >= maxBots) {
+        const minEnergyBot = world.splice(world.findIndex(obj => obj.energy === Math.min(...world.map(obj => obj.energy))), 1)[0];
+        logToConsole(`Бот ${minEnergyBot.id} умер от недостатка энергии.`);
+      } else {
+        const newBot = randomBot();
+        world.push(newBot);
+        logToConsole(`Родился бот ${newBot.id} с энергией ${newBot.energy}.`);
+      }
+      world.forEach(drawBot);
+      document.getElementById('iterationCount').textContent = `Итерация: ${++iterationCount}`;
+      logToConsole(`Итерация: ${iterationCount} | Боты: ${JSON.stringify(world)}`);
+    }
+
+    function startSimulation() {
+      clearInterval(intervalId);
+      maxBots = parseInt(document.getElementById('maxBotsInput').value, 10);
+      birthRate = parseInt(document.getElementById('birthRateInput').value, 10);
+      world.length = 0;
+      i = 0;
+      iterationCount = 0;
+      document.getElementById('iterationCount').textContent = 'Итерация: 0';
+      intervalId = setInterval(worldBots, birthRate);
+    }
+
+    function stopSimulation() {
+      clearInterval(intervalId);
+      intervalId = null;
+    }
+
+    function clearOutput() {
+      clearInterval(intervalId);
+      world.length = 0;
+      clearCanvas();
+      consoleOutput.innerHTML = 'Консоль:';
+      document.getElementById('iterationCount').textContent = 'Итерация: 0';
+    }
+
+    document.getElementById('startButton').addEventListener('click', startSimulation);
+    document.getElementById('stopButton').addEventListener('click', stopSimulation);
+    document.getElementById('clearButton').addEventListener('click', clearOutput);
+  </script>
+</body>
+</html>

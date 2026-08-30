@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Эволюция Ботов</title>
+  <style>
+    html, body {
+      margin: 0; padding: 0; overflow: hidden;
+      background: #111;
+      font-family: sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+    canvas {
+      display: block;
+      touch-action: none;
+    }
+    #controls {
+      position: absolute;
+      top: 10px; left: 10px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 14px;
+      z-index: 10;
+      max-width: 300px;
+      user-select: text;
+    }
+    button {
+      margin: 2px;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    #infoBox {
+      position: absolute;
+      top: 120px;
+      left: 10px;
+      background: rgba(0,0,0,0.8);
+      color: #0f0;
+      padding: 10px;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 13px;
+      white-space: pre-line;
+      max-width: 320px;
+      pointer-events: none;
+      user-select: none;
+      display: none;
+      z-index: 15;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+
+  <div id="controls">
+    <div>🌍 Время мира (итерации): <span id="timeDisplay">0</span></div>
+    <div>⏱ Скорость: <span id="speedDisplay">1000</span> мс</div>
+    <button id="pauseBtn">⏸ Пауза</button>
+    <button id="slowerBtn">🐢 Медленнее</button>
+    <button id="fasterBtn">⚡ Быстрее</button>
+    <button id="restartBtn">🔄 Перезапуск</button>
+    <div style="margin-top: 6px; font-size: 12px; color:#ccc;">
+      Клик/тап по полю — добавить еду.<br/>
+      Клик/тап на бота — информация о нём.
+    </div>
+  </div>
+
+  <div id="infoBox"></div>
+
+<script>
+(() => {
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+  canvas.width = width;
+  canvas.height = height;
+
+  const gridSize = 20;
+  const cols = Math.floor(width / gridSize);
+  const rows = Math.floor(height / gridSize);
+
+  let idCounter = 1;
+  let bots = [];
+  let food = [];
+  let isPaused = false;
+  let iterationDelay = 1000;
+  let interval = null;
+  let worldTime = 0; // счетчик итераций мира
+  let infoBox = document.getElementById("infoBox");
+
+  // Для хранения выбранного (кликнутого) бота
+  let selectedBot = null;
+  // Для хранения бота, на котором сейчас наведен курсор (если есть)
+  let hoveredBot = null;
+
+  function getFace(energy) {
+    if (energy > 70) return "😊";
+    if (energy > 30) return "😐";
+    if (energy > 0) return "😢";
+    return "💀";
+  }
+
+  function randomDir() {
+    return [{x:0,y:-1},{x:0,y:1},{x:-1,y:0},{x:1,y:0}][Math.floor(Math.random()*4)];
+  }
+
+  function foodColor(amount) {
+    // Кол-во еды 0-100: чем больше, тем ярче зеленый
+    // от очень светло-зеленого (мало еды) до насыщенного зеленого (много еды)
+    // Используем HSL для удобства: зелёный ~120°
+    let lightness = 80 - (amount / 100) * 60; // от 80% (мало) до 20% (много)
+    return `hsl(120, 100%, ${lightness}%)`;
+  }
+
+  class Bot {
+    constructor(x, y, energy = 100, generation = 1, mutation = 0) {
+      this.id = idCounter++;
+      this.x = x;
+      this.y = y;
+      this.energy = energy;
+      this.steps = 0;
+      this.generation = generation;
+      this.mutation = mutation;
+      this.timeSinceLastSplit = 0;
+      this.alive = true;
+    }
+
+    move() {
+      if (!this.alive) return;
+      this.steps++;
+      this.energy -= 1;
+
+      let dir = randomDir();
+      this.x = (this.x + dir.x + cols) % cols;
+      this.y = (this.y + dir.y + rows) % rows;
+
+      for (let i = 0; i < food.length; i++) {
+        let f = food[i];
+        if (f.x === this.x && f.y === this.y) {
+          let need = 100 - this.energy;
+          let eat = Math.min(need, f.amount);
+          this.energy += eat;
+          f.amount -= eat;
+          if (f.amount <= 0) food.splice(i, 1);
+          break;
+        }
+      }
+
+      this.timeSinceLastSplit++;
+      if (this.timeSinceLastSplit >= 50 && this.energy > 50) {
+        this.timeSinceLastSplit = 0;
+        this.split();
+      }
+
+      if (this.energy <= 0) {
+        this.energy = 0;
+        this.alive = false;
+        setTimeout(() => {
+          food.push({ x: this.x, y: this.y, amount: 100 });
+          bots = bots.filter(b => b.id !== this.id);
+          if (selectedBot && selectedBot.id === this.id) {
+            selectedBot = null;
+            hideInfo();
+          }
+        }, 1000);
+      }
+    }
+
+    split() {
+      // Пытаемся создать нового бота рядом (в одной из 4 соседних клеток)
+      const neighbors = [
+        {x:this.x+1, y:this.y},
+        {x:this.x-1, y:this.y},
+        {x:this.x, y:this.y+1},
+        {x:this.x, y:this.y-1},
+      ];
+      // Фильтруем по границам и по занятости клетки другими ботами
+      const freeNeighbors = neighbors.filter(pos => {
+        let nx = (pos.x + cols) % cols;
+        let ny = (pos.y + rows) % rows;
+        return !bots.some(b => b.x === nx && b.y === ny && b.alive);
+      });
+
+      if (freeNeighbors.length === 0) return; // Нет свободного места
+
+      // Выбираем случайную свободную клетку
+      let pos = freeNeighbors[Math.floor(Math.random() * freeNeighbors.length)];
+      let nx = (pos.x + cols) % cols;
+      let ny = (pos.y + rows) % rows;
+
+      bots.push(new Bot(
+        nx,
+        ny,
+        this.energy / 2,
+        this.generation + 1,
+        this.mutation + Math.floor(Math.random() * 11) - 5
+      ));
+      this.energy /= 2;
+    }
+
+    draw() {
+      const px = this.x * gridSize;
+      const py = this.y * gridSize;
+      ctx.fillStyle = "white";
+      ctx.font = `${gridSize - 2}px sans-serif`;
+      ctx.fillText(getFace(this.energy), px + 2, py + gridSize - 4);
+    }
+
+    infoText() {
+      return `ID: ${this.id}
+Поколение: ${this.generation}
+Энергия: ${this.energy.toFixed(1)}
+Шаги: ${this.steps}
+Мутация: ${this.mutation}`;
+    }
+  }
+
+  function drawGrid() {
+    ctx.strokeStyle = "#222";
+    for (let i = 0; i < cols; i++) {
+      ctx.beginPath();
+      ctx.moveTo(i * gridSize, 0);
+      ctx.lineTo(i * gridSize, canvas.height);
+      ctx.stroke();
+    }
+    for (let j = 0; j < rows; j++) {
+      ctx.beginPath();
+      ctx.moveTo(0, j * gridSize);
+      ctx.lineTo(canvas.width, j * gridSize);
+      ctx.stroke();
+    }
+  }
+
+  function drawFood() {
+    for (let f of food) {
+      ctx.fillStyle = foodColor(f.amount);
+      ctx.beginPath();
+      ctx.arc(f.x * gridSize + gridSize/2, f.y * gridSize + gridSize/2, 5, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+  }
+
+  function drawBots() {
+    for (let b of bots) {
+      b.draw();
+    }
+  }
+
+  function drawAll() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawGrid();
+    drawFood();
+
+    if (!isPaused) {
+      // Передвижение только если не на паузе
+      for (let b of bots) {
+        b.move();
+      }
+      worldTime++;
+      document.getElementById("timeDisplay").innerText = worldTime;
+    }
+
+    drawBots();
+
+    // Показ информации о боте при паузе или наведении или выборе
+    if (isPaused || hoveredBot || selectedBot) {
+      let bot = selectedBot || hoveredBot;
+      if (bot) {
+        showInfo(bot.infoText(), bot.x, bot.y);
+      } else {
+        hideInfo();
+      }
+    } else {
+      hideInfo();
+    }
+  }
+
+  function startLoop() {
+    clearInterval(interval);
+    interval = setInterval(() => {
+      drawAll();
+      document.getElementById("speedDisplay").innerText = iterationDelay;
+    }, iterationDelay);
+  }
+
+  function hideInfo() {
+    infoBox.style.display = "none";
+  }
+
+  function showInfo(text, botX, botY) {
+    infoBox.style.display = "block";
+    infoBox.textContent = text;
+
+    // Позиционируем infoBox рядом с ботом на экране
+    let px = botX * gridSize;
+    let py = botY * gridSize;
+
+    let left = px + 10;
+    let top = py + 10;
+
+    // Проверяем, чтобы infoBox не выходил за правый и нижний край окна
+    if (left + infoBox.offsetWidth > window.innerWidth) {
+      left = px - infoBox.offsetWidth - 10;
+    }
+    if (top + infoBox.offsetHeight > window.innerHeight) {
+      top = py - infoBox.offsetHeight - 10;
+    }
+
+    infoBox.style.left = `${left}px`;
+    infoBox.style.top = `${top}px`;
+  }
+
+  // Обработчики событий для добавления еды и выбора бота
+
+  function getBotAtPos(gridX, gridY) {
+    return bots.find(b => b.x === gridX && b.y === gridY && b.alive);
+  }
+
+  // Мышь/тап позиция → координаты в сетке
+  function coordsToGrid(x, y) {
+    return { gx: Math.floor(x / gridSize), gy: Math.floor(y / gridSize) };
+  }
+
+  canvas.addEventListener("click", (e) => {
+    e.preventDefault();
+    let { gx, gy } = coordsToGrid(e.clientX, e.clientY);
+    let bot = getBotAtPos(gx, gy);
+    if (bot) {
+      // Клик по боту — выделяем/снимаем выделение
+      if (selectedBot && selectedBot.id === bot.id) {
+        selectedBot = null;
+        hideInfo();
+      } else {
+        selectedBot = bot;
+        showInfo(bot.infoText(), bot.x, bot.y);
+      }
+    } else {
+      // Клик по пустой клетке — добавляем еду
+      food.push({ x: gx, y: gy, amount: 100 });
+      selectedBot = null;
+      hideInfo();
+    }
+  }, { passive: false });
+
+  canvas.addEventListener("mousemove", (e) => {
+    if (isPaused) return; // при паузе показываем только выбранного бота, игнорируем наведение
+    let { gx, gy } = coordsToGrid(e.clientX, e.clientY);
+    let bot = getBotAtPos(gx, gy);
+    if (bot) {
+      hoveredBot = bot;
+    } else {
+      hoveredBot = null;
+      hideInfo();
+    }
+  });
+
+  canvas.addEventListener("mouseleave", (e) => {
+    hoveredBot = null;
+    if (!selectedBot) hideInfo();
+  });
+
+  // Touch аналог для наведения — будет показывать инфо при тапах
+  canvas.addEventListener("touchstart", (e) => {
+    if (!e.touches.length) return;
+    let touch = e.touches[0];
+    let { gx, gy } = coordsToGrid(touch.clientX, touch.clientY);
+    let bot = getBotAtPos(gx, gy);
+    if (bot) {
+      selectedBot = bot;
+      showInfo(bot.infoText(), bot.x, bot.y);
+    } else {
+      selectedBot = null;
+      hideInfo();
+    }
+  });
+
+  // Кнопки управления
+  document.getElementById("pauseBtn").addEventListener("click", () => {
+    isPaused = !isPaused;
+    document.getElementById("pauseBtn").textContent = isPaused ? "▶️ Продолжить" : "⏸ Пауза";
+    if (!isPaused) {
+      selectedBot = null;
+      hideInfo();
+    }
+  });
+
+  document.getElementById("slowerBtn").addEventListener("click", () => {
+    iterationDelay = Math.min(iterationDelay + 200, 5000);
+    startLoop();
+  });
+
+  document.getElementById("fasterBtn").addEventListener("click", () => {
+    iterationDelay = Math.max(iterationDelay - 200, 100);
+    startLoop();
+  });
+
+  document.getElementById("restartBtn").addEventListener("click", () => {
+    // Сброс мира
+    bots = [];
+    food = [];
+    worldTime = 0;
+    selectedBot = null;
+    hoveredBot = null;
+    isPaused = false;
+    iterationDelay = 1000;
+    document.getElementById("pauseBtn").textContent = "⏸ Пауза";
+    document.getElementById("speedDisplay").innerText = iterationDelay;
+    document.getElementById("timeDisplay").innerText = worldTime;
+
+    // Создаем стартового бота в центре и немного еды
+    let startX = Math.floor(cols / 2);
+    let startY = Math.floor(rows / 2);
+    bots.push(new Bot(startX, startY));
+    for (let i = 0; i < 20; i++) {
+      food.push({
+        x: Math.floor(Math.random() * cols),
+        y: Math.floor(Math.random() * rows),
+        amount: 100
+      });
+    }
+  });
+
+  // При ресайзе окна меняем размер холста
+  window.addEventListener("resize", () => {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  });
+
+  // Инициализация мира при загрузке
+  function init() {
+    bots = [];
+    food = [];
+    worldTime = 0;
+    selectedBot = null;
+    hoveredBot = null;
+    isPaused = false;
+    iterationDelay = 1000;
+    document.getElementById("pauseBtn").textContent = "⏸ Пауза";
+    document.getElementById("speedDisplay").innerText = iterationDelay;
+    document.getElementById("timeDisplay").innerText = worldTime;
+
+    // Стартовый бот в центре
+    let startX = Math.floor(cols / 2);
+    let startY = Math.floor(rows / 2);
+    bots.push(new Bot(startX, startY));
+
+    // Еда в случайных местах
+    for (let i = 0; i < 20; i++) {
+      food.push({
+        x: Math.floor(Math.random() * cols),
+        y: Math.floor(Math.random() * rows),
+        amount: 100
+      });
+    }
+    startLoop();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
+
+
+
+/*
+
+========================= 🌍 СИМУЛЯТОР ЖИЗНИ: Пояснение =========================
+
+🔧 ОБЩЕЕ ОПИСАНИЕ:
+Это одностраничный симулятор жизни, в котором на поле (сетке) обитают простые организмы — "боты".
+Они перемещаются, ищут еду, питаются, стареют, размножаются, мутируют и умирают. 
+Мир работает по итерациям (тикам), каждая итерация — один шаг времени.
+
+🎯 ЦЕЛЬ СИМУЛЯЦИИ:
+Наблюдать, как за счёт случайных мутаций и естественного отбора боты учатся выживать всё дольше и эффективнее,
+создавая примитивную эволюцию прямо в браузере.
+
+================================================================================
+
+🔢 ОСНОВНЫЕ КОНЦЕПЦИИ:
+
+1. 🧱 СЕТКА:
+- Поле — это двумерный массив `width × height`, где каждый элемент — ячейка с едой и/или ботом.
+- Еда в клетке отображается цветом: чем **ярче**, тем **меньше еды** (и наоборот).
+- Еда постепенно восстанавливается во всех клетках с небольшой скоростью.
+
+2. 🤖 БОТ:
+Каждый бот — это отдельный организм со следующими характеристиками:
+- `x, y` — координаты на сетке.
+- `energy` — текущий запас энергии. Тратится на передвижение и размножение.
+- `age` — возраст в итерациях.
+- `brain` — массив из 10 чисел (мозг), определяющий направление движения.
+- `brainPointer` — указывает, какую команду исполнять в следующую итерацию.
+
+Команды мозга (`brain[i]`) могут быть:
+  0 — движение вверх
+  1 — вниз
+  2 — влево
+  3 — вправо
+
+3. ⚙️ ИТЕРАЦИЯ (ШАГ ВРЕМЕНИ):
+На каждом шаге симуляции:
+- Бот читает следующую команду из мозга и двигается.
+- Если в новой клетке есть еда — он её поглощает и увеличивает энергию.
+- Его возраст увеличивается.
+- С вероятностью — может умереть от старости или недостатка энергии.
+- Каждые 50 итераций (если хватает энергии) бот может **размножиться**.
+
+4. 🧬 РАЗМНОЖЕНИЕ И МУТАЦИИ:
+- При размножении бот копирует свой мозг потомку.
+- Но! С вероятностью 10% каждая команда мозга может **измениться** (мутация).
+- Это позволяет потомкам вести себя по-другому, случайно улучшая стратегию выживания.
+
+5. 🎨 ВИЗУАЛИЗАЦИЯ:
+- Каждый бот отображается как круг, его цвет показывает возраст и энергию.
+- Еда в клетках отображается фоном: от тёмного (много еды) до светлого (мало еды).
+- При наведении на бота или нажатии на него в режиме паузы, показывается информация: энергия, возраст, мозг.
+
+6. 🛑 ПАУЗА:
+- При паузе (по нажатию на пробел), симуляция останавливается.
+- Можно кликнуть или навести на бота, чтобы увидеть его характеристики.
+- Это удобно для изучения и анализа поведения.
+
+================================================================================
+
+📱 КРОССПЛАТФОРМЕННОСТЬ:
+- Программа адаптирована для всех устройств: от компьютеров до телефонов.
+- Работает в любом современном браузере.
+- Управление сенсорное и мышью.
+
+================================================================================
+
+📌 ОСНОВНЫЕ ПАРАМЕТРЫ (можно менять):
+- `BOT_COUNT_START`: количество начальных ботов.
+- `ENERGY_TO_REPRODUCE`: сколько энергии нужно для размножения.
+- `ITERATIONS_PER_REPRODUCTION`: как часто можно размножаться.
+- `MUTATION_RATE`: шанс мутации каждой команды мозга.
+- `MAX_ENERGY`: максимум энергии у бота.
+- `FOOD_REGEN_RATE`: как быстро растёт еда.
+
+================================================================================
+
+🔭 НАПРАВЛЕНИЯ ДЛЯ ДОРАБОТОК:
+- Добавить хищников или типы ботов.
+- Визуализация родословной (кто чей потомок).
+- Более сложные команды в мозге: например, "если рядом еда — иди туда".
+- Поведение "социальных" ботов — передача информации потомкам.
+
+================================================================================
+
+Автор: Лёха (aka LehaNeploxo_21)  
+Идея: эволюция с нуля в браузере  
+Дата старта: 2025
+
+================================================================================
+
+*/

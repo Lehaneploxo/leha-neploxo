@@ -75,6 +75,18 @@ window.SITE_I18N = {
     "project.notfound.cta": "ДО ПРОЄКТІВ",
     "project.placeholder": "Повний опис, матеріали та посилання цього проєкту з’являться найближчим часом.",
 
+    "projects.cyber.title": "CYBER BIOLOGY",
+    "projects.cyber.category": "Digital evolution",
+    "projects.cyber.date": "2024 — 2025",
+    "projects.cyber.desc": "Світи, де прості боти народжуються, борються за енергію та еволюціонують.",
+    "projects.cyber.desc.long": "Серія експериментів зі штучною еволюцією: у кожному світі власні правила народження, голоду, розмноження та мутацій. Боти рухаються, шукають їжу і борються за виживання — без жодного сценарію, лише випадковість і код.",
+    "project.worlds.label": "EXPERIMENTS",
+    "project.worlds.title": "Світи ботів",
+    "project.worlds.sub": "Кожен світ — окрема жива симуляція. Відкривайте та спостерігайте.",
+    "project.world.enter": "УВІЙТИ У СВІТ",
+    "project.world.number": "Світ ботів",
+    "world.back": "НАЗАД ДО ПРОЄКТУ",
+
     "meta.introTag": "Cinematic personal brand"
   },
 
@@ -147,6 +159,18 @@ window.SITE_I18N = {
     "project.notfound.text": "Такого проекта пока не существует. Вернитесь к списку проектов.",
     "project.notfound.cta": "К ПРОЕКТАМ",
     "project.placeholder": "Полное описание, материалы и ссылки этого проекта появятся в ближайшее время.",
+
+    "projects.cyber.title": "CYBER BIOLOGY",
+    "projects.cyber.category": "Digital evolution",
+    "projects.cyber.date": "2024 — 2025",
+    "projects.cyber.desc": "Миры, где простые боты рождаются, борются за энергию и эволюционируют.",
+    "projects.cyber.desc.long": "Серия экспериментов с искусственной эволюцией: в каждом мире свои правила рождения, голода, размножения и мутаций. Боты двигаются, ищут еду и борются за выживание — без сценария, только случайность и код.",
+    "project.worlds.label": "EXPERIMENTS",
+    "project.worlds.title": "Миры ботов",
+    "project.worlds.sub": "Каждый мир — отдельная живая симуляция. Открывайте и наблюдайте.",
+    "project.world.enter": "ВОЙТИ В МИР",
+    "project.world.number": "Мир ботов",
+    "world.back": "НАЗАД К ПРОЕКТУ",
 
     "meta.introTag": "Cinematic personal brand"
   },
@@ -221,12 +245,40 @@ window.SITE_I18N = {
     "project.notfound.cta": "TO PROJECTS",
     "project.placeholder": "Full description, media and links for this project will be added soon.",
 
+    "projects.cyber.title": "CYBER BIOLOGY",
+    "projects.cyber.category": "Digital evolution",
+    "projects.cyber.date": "2024 — 2025",
+    "projects.cyber.desc": "Worlds where simple bots are born, fight for energy, and evolve.",
+    "projects.cyber.desc.long": "A series of artificial-evolution experiments: each world runs its own rules for birth, hunger, reproduction and mutation. Bots move, search for food and fight to survive — no script, just randomness and code.",
+    "project.worlds.label": "EXPERIMENTS",
+    "project.worlds.title": "Bot worlds",
+    "project.worlds.sub": "Each world is its own living simulation. Open one and watch it run.",
+    "project.world.enter": "ENTER WORLD",
+    "project.world.number": "Bot World",
+    "world.back": "BACK TO PROJECT",
+
     "meta.introTag": "Cinematic personal brand"
   }
 };
 
-/* Placeholder demo projects — architecture only, no invented real projects. */
+/* Real projects + placeholder demo cards for future content. */
 window.SITE_PROJECTS = [
+  {
+    id: "cyber-biology",
+    image: null,
+    video: null,
+    cyberVisual: true,
+    titleKey: "projects.cyber.title",
+    categoryKey: "projects.cyber.category",
+    dateKey: "projects.cyber.date",
+    descKey: "projects.cyber.desc",
+    descLongKey: "projects.cyber.desc.long",
+    worlds: [
+      { id: "1", file: "assets/bots/world-1.html" },
+      { id: "2", file: "assets/bots/world-2.html" },
+      { id: "3", file: "assets/bots/world-3.html" }
+    ]
+  },
   {
     id: "01",
     image: "assets/img/lifestyle-mountain.png",
