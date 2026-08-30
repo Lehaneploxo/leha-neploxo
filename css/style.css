@@ -743,7 +743,7 @@ body.world-body { background: #050506; height: 100dvh; overflow: hidden; }
   background: #050506;
 }
 .world__back {
-  position: fixed; top: clamp(14px, 3vw, 24px); left: clamp(14px, 3vw, 24px);
+  position: fixed; bottom: clamp(14px, 3vw, 24px); left: clamp(14px, 3vw, 24px);
   z-index: 20;
   display: inline-flex; align-items: center; gap: 8px;
   padding: 12px 18px;
