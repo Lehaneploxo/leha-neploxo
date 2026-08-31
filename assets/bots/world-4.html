@@ -1,0 +1,1201 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Кибер-биология: Мир ботов</title>
+<style>
+  :root {
+    --bg: #0b0e13;
+    --panel: #12161f;
+    --panel-border: #232a38;
+    --text: #d8dee9;
+    --muted: #7b8598;
+    --accent: #4fd1c5;
+    --accent2: #f2a65a;
+    --danger: #e57373;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; height: 100dvh; margin: 0; overscroll-behavior: none; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font: 14px/1.4 -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    padding: 10px 16px;
+    padding-top: max(10px, env(safe-area-inset-top));
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    border-bottom: 1px solid var(--panel-border);
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  header h1 { font-size: 16px; margin: 0; color: var(--accent); font-weight: 600; flex: 1; min-width: 0; }
+  header .sub { color: var(--muted); font-size: 12px; }
+
+  #btn-rules {
+    flex: 0 0 auto;
+    align-self: center;
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+
+  #btn-menu {
+    display: none;
+    flex: 0 0 auto;
+    align-self: center;
+    font-size: 18px;
+    line-height: 1;
+    padding: 8px 12px;
+  }
+
+  #backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    z-index: 40;
+  }
+  #backdrop.show { display: block; }
+
+  #app { flex: 1; display: flex; min-height: 0; }
+
+  #sidebar {
+    width: 260px;
+    flex: 0 0 260px;
+    background: var(--panel);
+    border-right: 1px solid var(--panel-border);
+    padding: 14px;
+    padding-bottom: max(14px, env(safe-area-inset-bottom));
+    overflow-y: auto;
+  }
+  #sidebar-close { display: none; }
+  #sidebar h2 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+    margin: 18px 0 8px;
+  }
+  #sidebar h2:first-child { margin-top: 0; }
+
+  .field { margin-bottom: 10px; }
+  .field label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+  .field label span.val { color: var(--text); font-variant-numeric: tabular-nums; }
+  input[type=range] { width: 100%; accent-color: var(--accent); height: 28px; touch-action: pan-y; }
+  select {
+    width: 100%;
+    background: #0e1218;
+    color: var(--text);
+    border: 1px solid var(--panel-border);
+    border-radius: 6px;
+    padding: 9px 6px;
+    font-size: 14px;
+  }
+
+  button {
+    background: #1a2230;
+    color: var(--text);
+    border: 1px solid var(--panel-border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    touch-action: manipulation;
+    min-height: 40px;
+  }
+  button:hover { border-color: var(--accent); }
+  button.primary { background: var(--accent); color: #05201d; border-color: var(--accent); font-weight: 600; }
+  button.primary:hover { filter: brightness(1.08); }
+  .row { display: flex; gap: 8px; }
+  .row button { flex: 1; }
+
+  .view-modes { display: flex; flex-direction: column; gap: 4px; }
+  .view-modes label {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: var(--text); cursor: pointer;
+    padding: 6px 2px;
+  }
+  .view-modes input { width: 18px; height: 18px; }
+
+  #stage {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  #canvas-wrap {
+    position: relative;
+    flex: 1;
+    background: #000;
+    overflow: hidden;
+  }
+  #canvas-wrap canvas {
+    position: absolute;
+    top: 0; left: 0;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    cursor: crosshair;
+    touch-action: none;
+  }
+
+  #statusbar {
+    display: flex;
+    gap: 18px;
+    padding: 6px 14px;
+    padding-bottom: max(6px, env(safe-area-inset-bottom));
+    padding-left: max(14px, env(safe-area-inset-left));
+    padding-right: max(14px, env(safe-area-inset-right));
+    background: var(--panel);
+    border-top: 1px solid var(--panel-border);
+    font-size: 12px;
+    color: var(--muted);
+    flex-wrap: wrap;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  #statusbar b { color: var(--text); font-variant-numeric: tabular-nums; }
+
+  #inspector {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 230px;
+    max-width: calc(100vw - 24px);
+    max-height: calc(100% - 24px);
+    overflow-y: auto;
+    background: rgba(18,22,31,.95);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    backdrop-filter: blur(4px);
+    display: none;
+  }
+  #inspector.show { display: block; }
+  #inspector h3 { margin: 0 0 6px; font-size: 12px; color: var(--accent2); display: flex; justify-content: space-between; }
+  #inspector .close { cursor: pointer; color: var(--muted); }
+  #inspector table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 8px; }
+  #inspector td { padding: 1px 0; }
+  #inspector td.k { color: var(--muted); }
+  #inspector td.v { text-align: right; font-variant-numeric: tabular-nums; }
+  #genome-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 2px;
+  }
+  #genome-grid div {
+    aspect-ratio: 1;
+    border-radius: 2px;
+    font-size: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0008;
+  }
+  .hint { color: var(--muted); font-size: 11px; margin-top: 10px; }
+
+  /* ------------------------------ Окно "Правила" ---------------------------- */
+  #rules-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.65);
+    z-index: 60;
+    padding: 24px;
+    align-items: center;
+    justify-content: center;
+  }
+  #rules-backdrop.show { display: flex; }
+
+  #rules-modal {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 12px;
+    width: min(680px, 100%);
+    max-height: min(80vh, 780px);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0,0,0,.5);
+  }
+  #rules-modal header.rules-head {
+    border-bottom: 1px solid var(--panel-border);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+  }
+  #rules-modal header.rules-head h2 { margin: 0; font-size: 16px; color: var(--accent2); }
+  #rules-modal .rules-body {
+    padding: 4px 22px 20px;
+    overflow-y: auto;
+  }
+  .rules-body h3 {
+    color: var(--accent);
+    font-size: 14px;
+    margin: 20px 0 6px;
+  }
+  .rules-body h3:first-child { margin-top: 14px; }
+  .rules-body p, .rules-body li { color: var(--text); font-size: 13.5px; line-height: 1.55; }
+  .rules-body ul { margin: 4px 0; padding-left: 20px; }
+  .rules-body li { margin-bottom: 4px; }
+  .rules-body b.hl { color: var(--accent2); }
+  .swatches { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+  .swatch { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--muted); }
+  .swatch i { width: 14px; height: 14px; border-radius: 3px; flex: none; display: inline-block; }
+  .rules-body .lede { color: var(--muted); font-size: 13px; margin: 2px 0 0; }
+
+  /* -------------------------- Мобильная раскладка -------------------------- */
+  @media (max-width: 860px) {
+    header h1 { font-size: 15px; }
+    header .sub { display: none; }
+    #btn-menu { display: inline-flex; align-items: center; justify-content: center; }
+
+    #sidebar {
+      position: fixed;
+      top: 0; bottom: 0; left: 0;
+      width: min(320px, 86vw);
+      z-index: 50;
+      box-shadow: 2px 0 24px rgba(0,0,0,.5);
+      transform: translateX(-100%);
+      transition: transform .25s ease;
+      padding-top: max(14px, env(safe-area-inset-top));
+      padding-left: max(14px, env(safe-area-inset-left));
+    }
+    #sidebar.open { transform: translateX(0); }
+
+    #sidebar-close {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 6px;
+    }
+
+    #inspector {
+      top: auto;
+      bottom: 12px;
+      left: 12px;
+      right: 12px;
+      width: auto;
+      max-height: 50vh;
+    }
+
+    #statusbar { font-size: 11px; gap: 12px; }
+
+    #rules-backdrop { padding: 0; }
+    #rules-modal {
+      width: 100%;
+      height: 100%;
+      max-height: 100%;
+      border-radius: 0;
+    }
+    #rules-modal header.rules-head {
+      padding-top: max(14px, env(safe-area-inset-top));
+      padding-left: max(18px, env(safe-area-inset-left));
+      padding-right: max(18px, env(safe-area-inset-right));
+    }
+    #rules-modal .rules-body {
+      padding-left: max(18px, env(safe-area-inset-left));
+      padding-right: max(18px, env(safe-area-inset-right));
+      padding-bottom: max(20px, env(safe-area-inset-bottom));
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧬 Кибер-биология — мир ботов</h1>
+  <span class="sub">JS-порт симулятора Genesis: геном-боты, фотосинтез, минералы, эволюция</span>
+  <button id="btn-rules">❓ Правила мира</button>
+  <button id="btn-menu" aria-label="Настройки">☰</button>
+</header>
+
+<div id="backdrop"></div>
+
+<div id="rules-backdrop">
+  <div id="rules-modal" role="dialog" aria-modal="true" aria-labelledby="rules-title">
+    <header class="rules-head">
+      <h2 id="rules-title">📖 Как устроен этот мир</h2>
+      <button id="btn-rules-close" aria-label="Закрыть">✕</button>
+    </header>
+    <div class="rules-body">
+      <p class="lede">Это не игра с заданными сценариями — здесь никто не управляет существами напрямую. Вы наблюдаете за самостоятельной цифровой экосистемой: у каждого существа есть свой «геном» — крошечная программа поведения, — а дальше всё решают голод, случай и естественный отбор.</p>
+
+      <h3>Что вы видите на карте</h3>
+      <ul>
+        <li>Рельеф — сгенерированная местность. Ползунок <b class="hl">«Уровень моря»</b> определяет, где проходит граница воды и суши.</li>
+        <li>Маленькие цветные точки — <b class="hl">живые боты</b>.</li>
+        <li>Тусклые тёмные точки — <b class="hl">органика</b>: останки умерших ботов, которые ещё можно съесть.</li>
+      </ul>
+      <div class="swatches">
+        <span class="swatch"><i style="background:#0a2a55"></i>глубокая вода</span>
+        <span class="swatch"><i style="background:#1c5f66"></i>мелководье / берег</span>
+        <span class="swatch"><i style="background:#c9915a"></i>суша</span>
+        <span class="swatch"><i style="background:#f4ecd8"></i>возвышенность</span>
+      </div>
+
+      <h3>Из чего состоит бот</h3>
+      <p>У каждого бота есть геном — 64 «гена» (числа от 0 до 63). Каждый ход бот исполняет их один за другим как маленькую программу, начиная с того места, где остановился в прошлый раз. Ещё у него есть запас энергии, минералы, возраст, направление взгляда и два цвета: <b class="hl">цвет тела</b> (меняется от питания — краснеет от мяса, зеленеет от солнца, синеет от минералов) и <b class="hl">цвет рода</b> (передаётся потомкам и меняется только при мутации — по нему боты отличают «своих» от чужих).</p>
+
+      <h3>Как боты питаются</h3>
+      <ul>
+        <li><b class="hl">Фотосинтез</b> работает только в узкой полосе чуть выше уровня моря — это «плодородный пояс». Чем ближе к воде, тем больше энергии от солнца.</li>
+        <li><b class="hl">Минералы</b> сами копятся, если бот стоит на мелководье чуть ниже уровня моря.</li>
+        <li><b class="hl">Хемосинтез</b> превращает накопленные минералы обратно в энергию.</li>
+        <li><b class="hl">Охота</b>: бот может укусить соседа. Органику съесть просто. Живого бота — сложнее: чем больше у жертвы минералов («панциря»), тем труднее её одолеть.</li>
+      </ul>
+
+      <h3>Размножение и эволюция</h3>
+      <p>Когда энергии становится больше 999, бот делится пополам — рядом рождается копия, они делят между собой энергию и минералы. При делении есть шанс (ползунок «Шанс мутации», по умолчанию 25%) случайно изменить один ген у потомка — это и есть мутация, источник разнообразия. Боты с более удачным геномом (умеющие находить еду и не тратить силы впустую) оставляют больше потомков — и через сотни поколений на карте побеждают всё более жизнеспособные «стратегии». Это настоящий естественный отбор: никто не программировал ботов охотиться или прятаться — такое поведение может возникнуть само.</p>
+
+      <h3>Смерть</h3>
+      <p>Каждый ход бот тратит немного энергии на жизнедеятельность. Когда энергия падает до нуля, бот умирает и превращается в органику — она остаётся на карте, и её может съесть кто-то другой.</p>
+
+      <h3>Другие взаимодействия</h3>
+      <ul>
+        <li><b class="hl">Поделиться / отдать</b> — бот может передать часть энергии или минералов соседу.</li>
+        <li><b class="hl">Генная атака</b> — бот может испортить один случайный ген соседа спереди, потратив на это часть своей энергии.</li>
+        <li><b class="hl">Родство</b> определяется по схожести цвета рода — в генах может закрепиться разное поведение к своим и чужим, если эволюция «додумается» до этого.</li>
+      </ul>
+
+      <h3>Режимы отображения (левая панель)</h3>
+      <ul>
+        <li><b class="hl">Базовый</b> — естественная окраска по типу питания.</li>
+        <li><b class="hl">Комбинированный</b> — сразу несколько показателей в одном цвете.</li>
+        <li><b class="hl">Энергия</b> — чем желтее, тем сытнее бот; красный — сил почти нет.</li>
+        <li><b class="hl">Минералы</b> — чем синее, тем больше накоплено минералов.</li>
+        <li><b class="hl">Возраст</b> — показывает, кто дольше всех продержался в живых.</li>
+        <li><b class="hl">Семьи</b> — у каждого рода свой цвет: удобно смотреть, как один клан вытесняет другой.</li>
+      </ul>
+
+      <h3>Как управлять</h3>
+      <ul>
+        <li><b class="hl">«Создать новый мир»</b> — сгенерировать новую карту и начать заново с одного бота-предка.</li>
+        <li><b class="hl">Уровень моря</b> можно двигать на ходу — сразу меняется, где на карте плодородная зона, а где пустыня.</li>
+        <li><b class="hl">Скорость</b> — сколько поколений просчитывается за один кадр.</li>
+        <li>Клик по любому боту или органике на карте открывает его геном и характеристики — бирюзовые ячейки в геноме это значащие команды, серые — просто «прыжки», связывающие поведение бота в цепочки.</li>
+      </ul>
+
+      <p class="lede">Понажимайте на ползунки, смените уровень моря, понаблюдайте подольше — иногда неожиданно удачные «виды» ботов возникают совершенно случайно.</p>
+    </div>
+  </div>
+</div>
+
+<div id="app">
+  <aside id="sidebar">
+    <div id="sidebar-close"><button id="btn-sidebar-close" aria-label="Закрыть">✕</button></div>
+    <h2>Мир</h2>
+    <div class="field">
+      <label>Масштаб карты <span class="val" id="v-scale">140</span></label>
+      <input type="range" id="scale" min="20" max="400" value="140">
+    </div>
+    <div class="field">
+      <label>Детализация сетки</label>
+      <select id="detail">
+        <option value="8">Крупная (быстрее)</option>
+        <option value="5" selected>Средняя</option>
+        <option value="3">Мелкая (медленнее)</option>
+      </select>
+    </div>
+    <button class="primary" id="btn-newmap" style="width:100%">🌍 Создать новый мир</button>
+
+    <h2>Уровень моря</h2>
+    <div class="field">
+      <label>Sea level <span class="val" id="v-sea">145</span></label>
+      <input type="range" id="sealevel" min="0" max="256" value="145">
+    </div>
+
+    <h2>Симуляция</h2>
+    <div class="row" style="margin-bottom:10px">
+      <button class="primary" id="btn-run">▶ Старт</button>
+    </div>
+    <div class="field">
+      <label>Скорость (поколений/кадр) <span class="val" id="v-speed">4</span></label>
+      <input type="range" id="speed" min="1" max="40" value="4">
+    </div>
+    <div class="field">
+      <label>Шанс мутации при делении <span class="val" id="v-mut">25%</span></label>
+      <input type="range" id="mutrate" min="0" max="100" value="25">
+    </div>
+
+    <h2>Режим отображения</h2>
+    <div class="view-modes">
+      <label><input type="radio" name="view" value="base" checked> Базовый (окраска питания)</label>
+      <label><input type="radio" name="view" value="combined"> Комбинированный</label>
+      <label><input type="radio" name="view" value="energy"> Энергия</label>
+      <label><input type="radio" name="view" value="mineral"> Минералы</label>
+      <label><input type="radio" name="view" value="age"> Возраст</label>
+      <label><input type="radio" name="view" value="family"> Семьи (роды)</label>
+    </div>
+
+    <p class="hint">Клик по существу на карте — открыть его геном и характеристики. Пробел — старт/стоп.</p>
+  </aside>
+
+  <div id="stage">
+    <div id="canvas-wrap">
+      <canvas id="terrain"></canvas>
+      <canvas id="bots"></canvas>
+      <div id="inspector">
+        <h3>Существо <span class="close" id="insp-close">✕</span></h3>
+        <table id="insp-table"></table>
+        <div id="genome-grid"></div>
+      </div>
+    </div>
+    <div id="statusbar">
+      <span>Поколение: <b id="s-gen">0</b></span>
+      <span>Популяция: <b id="s-pop">0</b></span>
+      <span>Органика: <b id="s-org">0</b></span>
+      <span>Рождений: <b id="s-births">0</b></span>
+      <span>Сетка: <b id="s-grid">–</b></span>
+      <span>Тиков/сек: <b id="s-tps">0</b></span>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+"use strict";
+
+/* =========================================================================
+ * ГЕНОМ-БОТЫ: виртуальная машина
+ * Каждый бот несёт "геном" из 64 команд (0..63). Команды-действия
+ * (фотосинтез, шаг, деление, атака...) завершают ход бота. Команды-условия
+ * (посмотреть, проверить уровень/здоровье/минералы...) не завершают ход,
+ * а лишь смещают указатель команды по "таблице переходов": сразу после
+ * условной команды в геноме лежат байты-смещения для каждого возможного
+ * исхода (пусто/стена/органика/бот/родня). Любое другое число воспринимается
+ * как безусловный переход на столько же байт вперёд — это "заполнитель",
+ * который в ходе эволюции превращается в связки условий и действий.
+ * =========================================================================
+ */
+const MIND_SIZE = 64;
+const CMD = {
+  MUTATE: 0, DIVIDE: 16, ROTATE: 23, MOVE: 26,
+  PHOTOSYNTH: 32, CHEMOSYNTH: 33, EAT: 34,
+  GIVE_A: 36, GIVE_B: 37, CARE_A: 38, CARE_B: 39,
+  LOOK: 40, CHECK_LEVEL: 41, CHECK_HEALTH: 42, CHECK_MINERAL: 43,
+  IS_SURROUNDED: 46, IS_HEALTH_GROWING: 47, IS_MINERAL_GROWING: 48,
+  GENE_ATTACK: 52
+};
+
+let mutationChance = 0.25;
+
+function clamp(v, lo, hi) { return v < lo ? lo : (v > hi ? hi : v); }
+function wrapByte(v) { return v & 255; } // деградирует так же, как Java "& 0xFF" — переполнение оборачивается, а не обрезается
+
+/* ---------------------------- Мир / сетка ------------------------------ */
+let W = 0, H = 0;
+let heightMap = null;      // Uint8Array, рельеф 0..255
+let grid = null;           // Array<Bot|null>, кто занимает клетку
+let sealevel = 145;
+let generation = 0;
+let births = 0;
+const head = { next: null, prev: null }; // "нулевой" бот-заглушка — начало/конец кольцевого списка
+
+function idx(x, y) { return y * W + x; }
+
+/* ------------------------------- Шум ------------------------------------ */
+// Упрощённый value-noise (4 градиента), даёт похожий ландшафт на Perlin2D
+// из оригинала, без завязки на конкретный алгоритм java.util.Random.
+function makeNoise(seed) {
+  function hash(x, y) {
+    let h = Math.imul(x, 374761393) + Math.imul(y, 668265263) + Math.imul(seed, 2654435761) | 0;
+    h = Math.imul(h ^ (h >>> 15), 2246822519);
+    h ^= h >>> 13;
+    h = Math.imul(h, 3266489917);
+    h ^= h >>> 16;
+    return h >>> 0;
+  }
+  const GRAD = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+  function gradient(x, y) { return GRAD[hash(x, y) & 3]; }
+  function quintic(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  function noise2(x, y) {
+    const left = Math.floor(x), top = Math.floor(y);
+    const lx = x - left, ly = y - top;
+    const g00 = gradient(left, top), g10 = gradient(left + 1, top);
+    const g01 = gradient(left, top + 1), g11 = gradient(left + 1, top + 1);
+    const d00 = lx * g00[0] + ly * g00[1];
+    const d10 = (lx - 1) * g10[0] + ly * g10[1];
+    const d01 = lx * g01[0] + (ly - 1) * g01[1];
+    const d11 = (lx - 1) * g11[0] + (ly - 1) * g11[1];
+    const tx = lerp(d00, d10, quintic(lx));
+    const bx = lerp(d01, d11, quintic(lx));
+    return lerp(tx, bx, quintic(ly));
+  }
+
+  return function octaveNoise(x, y, octaves, persistence) {
+    let amp = 1, max = 0, result = 0;
+    for (let i = 0; i < octaves; i++) {
+      max += amp;
+      result += noise2(x, y) * amp;
+      amp *= persistence;
+      x *= 2; y *= 2;
+    }
+    return result / max;
+  };
+}
+
+function generateMap(seed) {
+  generation = 0; births = 0;
+  const noise = makeNoise(seed);
+  const f = Math.max(4, parseInt(scaleInput.value, 10));
+  heightMap = new Uint8Array(W * H);
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      const v = noise(x / f, y / f, 8, 0.45);
+      heightMap[idx(x, y)] = wrapByte(Math.floor(v * 255 + 128));
+    }
+  }
+  grid = new Array(W * H).fill(null);
+}
+
+/* ------------------------------- Бот ------------------------------------- */
+function newBot() {
+  return {
+    x: 0, y: 0, dir: 0, alive: 3, adr: 0,
+    health: 0, mineral: 0, age: 0,
+    cr: 170, cg: 170, cb: 170,
+    fr: 170, fg: 170, fb: 170,   // цвет семьи (родства)
+    mind: new Uint8Array(MIND_SIZE),
+    prev: null, next: null
+  };
+}
+
+function generateAdam() {
+  const bot = newBot();
+  bot.x = (W >> 1); bot.y = (H >> 1);
+  bot.health = 990; bot.mineral = 0; bot.alive = 3; bot.age = 0;
+  bot.dir = 5;
+  bot.mind.fill(CMD.PHOTOSYNTH);
+  bot.prev = head; bot.next = head;
+  head.next = bot; head.prev = bot;
+  grid[idx(bot.x, bot.y)] = bot;
+}
+
+function xFromVektorR(bot, n) {
+  let xt = bot.x;
+  n = (n + bot.dir) % 8;
+  if (n === 0 || n === 6 || n === 7) { xt--; if (xt < 0) xt = W - 1; }
+  else if (n >= 2 && n <= 4) { xt++; if (xt >= W) xt = 0; }
+  return xt;
+}
+function yFromVektorR(bot, n) {
+  let yt = bot.y;
+  n = (n + bot.dir) % 8;
+  if (n <= 2) yt--;
+  else if (n >= 4 && n <= 6) yt++;
+  return yt;
+}
+function isRelative(a, b) {
+  const dr = a.fr - b.fr, dg = a.fg - b.fg, db = a.fb - b.fb;
+  return (dr * dr + dg * dg + db * db) < 900;
+}
+function findEmptyDirection(bot) {
+  for (let i = 0; i < 8; i++) {
+    const xt = xFromVektorR(bot, i), yt = yFromVektorR(bot, i);
+    if (yt >= 0 && yt < H && !grid[idx(xt, yt)]) return i;
+  }
+  return 8;
+}
+function getParam(bot) { return bot.mind[(bot.adr + 1) % MIND_SIZE]; }
+function incAdr(bot, a) { bot.adr = (bot.adr + a) % MIND_SIZE; }
+function jumpAdr(bot, code) { incAdr(bot, bot.mind[(bot.adr + code) % MIND_SIZE]); }
+
+function moveBotTo(bot, xt, yt) {
+  grid[idx(xt, yt)] = bot;
+  grid[idx(bot.x, bot.y)] = null;
+  bot.x = xt; bot.y = yt;
+}
+function deleteBot(bot) {
+  grid[idx(bot.x, bot.y)] = null;
+  bot.prev.next = bot.next;
+  bot.next.prev = bot.prev;
+}
+function goGreen(bot, n) {
+  bot.cg = clamp(bot.cg + n, 0, 255);
+  const h = n >> 1;
+  bot.cr = clamp(bot.cr - h, 0, 255);
+  bot.cb = clamp(bot.cb - h, 0, 255);
+}
+function goBlue(bot, n) {
+  bot.cb = clamp(bot.cb + n, 0, 255);
+  const h = n >> 1;
+  bot.cg = clamp(bot.cg - h, 0, 255);
+  bot.cr = clamp(bot.cr - h, 0, 255);
+}
+function goRed(bot, n) {
+  bot.cr = clamp(bot.cr + n, 0, 255);
+  const h = n >> 1;
+  bot.cg = clamp(bot.cg - h, 0, 255);
+  bot.cb = clamp(bot.cb - h, 0, 255);
+}
+
+function botMutate(bot) {
+  bot.mind[(Math.random() * MIND_SIZE) | 0] = (Math.random() * MIND_SIZE) | 0;
+  bot.mind[(Math.random() * MIND_SIZE) | 0] = (Math.random() * MIND_SIZE) | 0;
+}
+function botRotate(bot) { bot.dir = (bot.dir + getParam(bot)) % 8; }
+
+function botEatSun(bot) {
+  let t = bot.mineral < 100 ? 0 : (bot.mineral < 400 ? 1 : 2);
+  const level = heightMap[idx(bot.x, bot.y)];
+  let hlt = 0;
+  if (level > sealevel && level <= sealevel + 60) {
+    hlt = t + Math.floor((sealevel + 60 - level) * 0.2);
+  }
+  if (hlt > 0) { bot.health += hlt; goGreen(bot, hlt); }
+}
+function botMineral2Health(bot) {
+  if (bot.mineral > 100) {
+    bot.mineral -= 100; bot.health += 400; goBlue(bot, 100);
+  } else {
+    goBlue(bot, bot.mineral);
+    bot.health += 4 * bot.mineral;
+    bot.mineral = 0;
+  }
+}
+function botMove(bot) {
+  const dir = getParam(bot) % 8;
+  const xt = xFromVektorR(bot, dir), yt = yFromVektorR(bot, dir);
+  if (yt < 0 || yt >= H) return 3;
+  const there = grid[idx(xt, yt)];
+  if (!there) { moveBotTo(bot, xt, yt); return 2; }
+  if (there.alive === 1) return 4;
+  return isRelative(bot, there) ? 6 : 5;
+}
+function botEatBot(bot) {
+  const dir = getParam(bot) % 8;
+  bot.health -= 4;
+  const xt = xFromVektorR(bot, dir), yt = yFromVektorR(bot, dir);
+  if (yt < 0 || yt >= H) return 3;
+  const there = grid[idx(xt, yt)];
+  if (!there) return 2;
+  if (there.alive === 1) {
+    deleteBot(there);
+    bot.health += 100; goRed(bot, 100);
+    return 4;
+  }
+  const min0 = bot.mineral, min1 = there.mineral, hl = there.health;
+  if (min0 >= min1) {
+    bot.mineral = min0 - min1;
+    deleteBot(there);
+    const cl = 100 + (hl >> 1);
+    bot.health += cl; goRed(bot, cl);
+    return 5;
+  }
+  bot.mineral = 0;
+  const rem1 = min1 - min0;
+  there.mineral = rem1;
+  if (bot.health >= 2 * rem1) {
+    deleteBot(there);
+    let cl = 100 + (hl >> 1) - 2 * rem1;
+    if (cl < 0) cl = 0;
+    bot.health += cl; goRed(bot, cl);
+    return 5;
+  }
+  there.mineral = rem1 - Math.floor(bot.health / 2);
+  bot.health = 0;
+  return 5;
+}
+function botSeeBots(bot) {
+  const dir = getParam(bot) % 8;
+  const xt = xFromVektorR(bot, dir), yt = yFromVektorR(bot, dir);
+  if (yt < 0 || yt >= H) return 3;
+  const there = grid[idx(xt, yt)];
+  if (!there) return 2;
+  if (there.alive === 1) return 4;
+  return isRelative(bot, there) ? 6 : 5;
+}
+function checkLevel(bot) {
+  return heightMap[idx(bot.x, bot.y)] < 256 * getParam(bot) / MIND_SIZE ? 2 : 3;
+}
+function checkHealth(bot) {
+  return bot.health < 1000 * getParam(bot) / MIND_SIZE ? 2 : 3;
+}
+function checkMineral(bot) {
+  return bot.mineral < 1000 * getParam(bot) / MIND_SIZE ? 2 : 3;
+}
+function isFullAround(bot) {
+  for (let i = 0; i < 8; i++) {
+    const xt = xFromVektorR(bot, i), yt = yFromVektorR(bot, i);
+    if (yt >= 0 && yt < H && !grid[idx(xt, yt)]) return 2;
+  }
+  return 1;
+}
+function isHealthGrow(bot) {
+  const t = bot.mineral < 100 ? 0 : (bot.mineral < 400 ? 1 : 2);
+  const level = heightMap[idx(bot.x, bot.y)];
+  let hlt = 0;
+  if (level > sealevel && level <= sealevel + 60) {
+    hlt = Math.floor((sealevel + 60 - level) / 5) + t;
+  }
+  return hlt >= 3 ? 1 : 2;
+}
+function isMineralGrow(bot) {
+  const level = heightMap[idx(bot.x, bot.y)];
+  return (level > sealevel - 30 && level <= sealevel) ? 1 : 2;
+}
+function botGenAttack(bot) {
+  const xt = xFromVektorR(bot, 0), yt = yFromVektorR(bot, 0);
+  if (yt >= 0 && yt < H) {
+    const there = grid[idx(xt, yt)];
+    if (there && there.alive === 3) {
+      bot.health -= 10;
+      if (bot.health > 0) {
+        there.mind[(Math.random() * MIND_SIZE) | 0] = (Math.random() * MIND_SIZE) | 0;
+      }
+    }
+  }
+}
+function botCare(bot) {
+  const dir = getParam(bot) % 8;
+  const xt = xFromVektorR(bot, dir), yt = yFromVektorR(bot, dir);
+  if (yt < 0 || yt >= H) return 3;
+  const there = grid[idx(xt, yt)];
+  if (!there) return 2;
+  if (there.alive === 1) return 4;
+  if (bot.health > there.health) {
+    const h = (bot.health - there.health) >> 1;
+    bot.health -= h; there.health += h;
+  }
+  if (bot.mineral > there.mineral) {
+    const m = (bot.mineral - there.mineral) >> 1;
+    bot.mineral -= m; there.mineral += m;
+  }
+  return 5;
+}
+function botGive(bot) {
+  const dir = getParam(bot) % 8;
+  const xt = xFromVektorR(bot, dir), yt = yFromVektorR(bot, dir);
+  if (yt < 0 || yt >= H) return 3;
+  const there = grid[idx(xt, yt)];
+  if (!there) return 2;
+  if (there.alive === 1) return 4;
+  const give = bot.health >> 2;
+  bot.health -= give; there.health += give;
+  if (bot.mineral > 3) {
+    const m = bot.mineral >> 2;
+    bot.mineral -= m;
+    there.mineral = Math.min(999, there.mineral + m);
+  }
+  return 5;
+}
+function newFamilyColor(bot) {
+  const delta = (200000 / (generation + 1000)) + 20;
+  const off = () => (Math.random() * delta - delta / 2) | 0;
+  return {
+    fr: wrapByte(bot.fr + off()),
+    fg: wrapByte(bot.fg + off()),
+    fb: wrapByte(bot.fb + off())
+  };
+}
+function botDouble(bot) {
+  bot.health -= 150;
+  if (bot.health <= 0) return;
+  const n = findEmptyDirection(bot);
+  if (n === 8) { bot.health = 0; return; }
+
+  const nb = newBot();
+  const xt = xFromVektorR(bot, n), yt = yFromVektorR(bot, n);
+  nb.mind.set(bot.mind);
+  nb.x = xt; nb.y = yt;
+  nb.health = Math.floor(bot.health / 2); bot.health = Math.floor(bot.health / 2);
+  nb.mineral = Math.floor(bot.mineral / 2); bot.mineral = Math.floor(bot.mineral / 2);
+  nb.alive = 3;
+  nb.cr = bot.cr; nb.cg = bot.cg; nb.cb = bot.cb;
+  nb.fr = bot.fr; nb.fg = bot.fg; nb.fb = bot.fb;
+
+  if (Math.random() < mutationChance) {
+    nb.mind[(Math.random() * MIND_SIZE) | 0] = (Math.random() * MIND_SIZE) | 0;
+    const c = newFamilyColor(bot);
+    nb.fr = c.fr; nb.fg = c.fg; nb.fb = c.fb;
+  }
+  nb.dir = (Math.random() * 8) | 0;
+
+  nb.prev = bot.prev;
+  bot.prev.next = nb;
+  nb.next = bot;
+  bot.prev = nb;
+
+  grid[idx(xt, yt)] = nb;
+  births++;
+}
+
+function stepBot(bot) {
+  for (let cyc = 0; cyc < 15; cyc++) {
+    const command = bot.mind[bot.adr];
+    let brk = false;
+    switch (command) {
+      case CMD.MUTATE: botMutate(bot); incAdr(bot, 1); brk = true; break;
+      case CMD.DIVIDE: botDouble(bot); incAdr(bot, 1); brk = true; break;
+      case CMD.ROTATE: botRotate(bot); incAdr(bot, 2); break;
+      case CMD.MOVE: jumpAdr(bot, botMove(bot)); brk = true; break;
+      case CMD.PHOTOSYNTH: botEatSun(bot); incAdr(bot, 1); brk = true; break;
+      case CMD.CHEMOSYNTH: botMineral2Health(bot); incAdr(bot, 1); brk = true; break;
+      case CMD.EAT: jumpAdr(bot, botEatBot(bot)); brk = true; break;
+      case CMD.GIVE_A: case CMD.GIVE_B: jumpAdr(bot, botGive(bot)); break;
+      case CMD.CARE_A: case CMD.CARE_B: jumpAdr(bot, botCare(bot)); break;
+      case CMD.LOOK: jumpAdr(bot, botSeeBots(bot)); break;
+      case CMD.CHECK_LEVEL: jumpAdr(bot, checkLevel(bot)); break;
+      case CMD.CHECK_HEALTH: jumpAdr(bot, checkHealth(bot)); break;
+      case CMD.CHECK_MINERAL: jumpAdr(bot, checkMineral(bot)); break;
+      case CMD.IS_SURROUNDED: jumpAdr(bot, isFullAround(bot)); break;
+      case CMD.IS_HEALTH_GROWING: jumpAdr(bot, isHealthGrow(bot)); break;
+      case CMD.IS_MINERAL_GROWING: jumpAdr(bot, isMineralGrow(bot)); break;
+      case CMD.GENE_ATTACK: botGenAttack(bot); incAdr(bot, 1); brk = true; break;
+      default: incAdr(bot, command); break;
+    }
+    if (brk) break;
+  }
+
+  if (bot.alive !== 3) return;
+  if (bot.health > 999) botDouble(bot);
+  bot.health -= 3;
+  bot.age++;
+  if (bot.health <= 0) { bot.alive = 1; return; }
+
+  const level = heightMap[idx(bot.x, bot.y)];
+  if (level > sealevel - 30 && level <= sealevel) {
+    bot.mineral += (level <= sealevel - 20) ? 1 : (level <= sealevel - 10 ? 2 : 3);
+  }
+  if (bot.mineral > 1000) bot.mineral = 1000;
+}
+
+function tick() {
+  let cur = head.next;
+  while (cur !== head) {
+    if (cur.alive === 3) stepBot(cur);
+    cur = cur.next;
+  }
+  generation++;
+}
+
+/* ------------------------------ Рендер ----------------------------------- */
+const terrainCanvas = document.getElementById("terrain");
+const botsCanvas = document.getElementById("bots");
+const tctx = terrainCanvas.getContext("2d");
+const bctx = botsCanvas.getContext("2d");
+const wrapEl = document.getElementById("canvas-wrap");
+
+function paintTerrain() {
+  const img = tctx.createImageData(W, H);
+  const d = img.data;
+  for (let i = 0; i < W * H; i++) {
+    const level = heightMap[i];
+    let r, g, b;
+    if (level < sealevel) {
+      r = 5;
+      b = clamp(140 - (sealevel - level) * 3, 20, 255);
+      g = clamp(150 - (sealevel - level) * 10, 10, 255);
+    } else {
+      r = clamp(150 + (level - sealevel) * 2.5, 0, 255);
+      g = clamp(100 + (level - sealevel) * 2.6, 0, 255);
+      b = clamp(50 + (level - sealevel) * 3, 0, 255);
+    }
+    const o = i * 4;
+    d[o] = r; d[o + 1] = g; d[o + 2] = b; d[o + 3] = 255;
+  }
+  tctx.putImageData(img, 0, 0);
+}
+
+let viewMode = "base";
+function organicColor(level) {
+  let r, g, b;
+  if (level < sealevel) {
+    r = 20;
+    b = clamp(160 - (sealevel - level) * 2, 40, 255);
+    g = clamp(170 - (sealevel - level) * 4, 20, 255);
+  } else {
+    r = clamp(80 + (level - sealevel) * 2.5, 0, 255);
+    g = clamp(60 + (level - sealevel) * 2.6, 0, 255);
+    b = clamp(30 + (level - sealevel) * 3, 0, 255);
+  }
+  return [r, g, b];
+}
+
+function render() {
+  const img = bctx.createImageData(W, H);
+  const d = img.data;
+  let population = 0, organic = 0;
+  let cur = head.next;
+  while (cur !== head) {
+    const o = idx(cur.x, cur.y) * 4;
+    if (cur.alive === 3) {
+      population++;
+      let r, g, b;
+      switch (viewMode) {
+        case "energy":
+          r = 255; g = clamp(255 - cur.health * 0.25, 0, 255); b = 0; break;
+        case "mineral":
+          r = 0; g = 255; b = clamp(255 - cur.mineral * 0.5, 0, 255); break;
+        case "combined":
+          r = cur.cr;
+          g = clamp(cur.cg * (1 - cur.health * 0.0005), 0, 255);
+          b = clamp(cur.cb * (0.8 - cur.mineral * 0.0005), 0, 255);
+          break;
+        case "age":
+          r = clamp(255 - Math.sqrt(cur.age) * 4, 0, 255); g = 0; b = 255; break;
+        case "family":
+          r = cur.fr; g = cur.fg; b = cur.fb; break;
+        default:
+          r = cur.cr; g = cur.cg; b = cur.cb;
+      }
+      d[o] = r; d[o + 1] = g; d[o + 2] = b; d[o + 3] = 255;
+    } else if (cur.alive === 1) {
+      organic++;
+      const [r, g, b] = organicColor(heightMap[idx(cur.x, cur.y)]);
+      d[o] = r; d[o + 1] = g; d[o + 2] = b; d[o + 3] = 255;
+    }
+    cur = cur.next;
+  }
+  bctx.clearRect(0, 0, W, H);
+  bctx.putImageData(img, 0, 0);
+
+  document.getElementById("s-gen").textContent = generation;
+  document.getElementById("s-pop").textContent = population;
+  document.getElementById("s-org").textContent = organic;
+  document.getElementById("s-births").textContent = births;
+
+  if (selectedBot) refreshInspector();
+}
+
+/* --------------------------------- UI ------------------------------------ */
+const scaleInput = document.getElementById("scale");
+const sealevelInput = document.getElementById("sealevel");
+const speedInput = document.getElementById("speed");
+const mutInput = document.getElementById("mutrate");
+const detailInput = document.getElementById("detail");
+const btnRun = document.getElementById("btn-run");
+const btnNewMap = document.getElementById("btn-newmap");
+
+document.getElementById("v-scale").textContent = scaleInput.value;
+document.getElementById("v-sea").textContent = sealevelInput.value;
+document.getElementById("v-speed").textContent = speedInput.value;
+document.getElementById("v-mut").textContent = mutInput.value + "%";
+
+scaleInput.addEventListener("input", () => { document.getElementById("v-scale").textContent = scaleInput.value; });
+speedInput.addEventListener("input", () => { document.getElementById("v-speed").textContent = speedInput.value; });
+mutInput.addEventListener("input", () => {
+  document.getElementById("v-mut").textContent = mutInput.value + "%";
+  mutationChance = mutInput.value / 100;
+});
+sealevelInput.addEventListener("input", () => {
+  sealevel = parseInt(sealevelInput.value, 10);
+  document.getElementById("v-sea").textContent = sealevel;
+  if (heightMap) paintTerrain();
+});
+
+document.querySelectorAll('input[name=view]').forEach(r => {
+  r.addEventListener("change", () => { if (r.checked) viewMode = r.value; });
+});
+
+let running = false;
+function setRunning(v) {
+  running = v;
+  btnRun.textContent = running ? "⏸ Стоп" : "▶ Старт";
+}
+btnRun.addEventListener("click", () => {
+  setRunning(!running);
+  if (running) closeSidebar();
+});
+document.addEventListener("keydown", e => {
+  if (e.code === "Space" && e.target.tagName !== "INPUT" && !rulesBackdrop.classList.contains("show")) {
+    e.preventDefault(); setRunning(!running);
+  }
+});
+
+function resizeAndInit() {
+  const cellPx = parseInt(detailInput.value, 10);
+  const rect = wrapEl.getBoundingClientRect();
+  W = clamp(Math.floor(rect.width / cellPx), 50, 280);
+  H = clamp(Math.floor(rect.height / cellPx), 40, 170);
+  terrainCanvas.width = W; terrainCanvas.height = H;
+  botsCanvas.width = W; botsCanvas.height = H;
+  document.getElementById("s-grid").textContent = W + " × " + H;
+  fitCanvases();
+}
+
+// сохраняем квадратные пиксели и вписываем сетку в текущий размер контейнера
+// (не пересоздавая мир) — важно при повороте телефона или ресайзе окна
+function fitCanvases() {
+  if (!W || !H) return;
+  const rect = wrapEl.getBoundingClientRect();
+  if (rect.width < 1 || rect.height < 1) return;
+  const scale = Math.min(rect.width / W, rect.height / H);
+  const dispW = Math.round(W * scale);
+  const dispH = Math.round(H * scale);
+  const left = Math.floor((rect.width - dispW) / 2);
+  const top = Math.floor((rect.height - dispH) / 2);
+  [terrainCanvas, botsCanvas].forEach(c => {
+    c.style.width = dispW + "px";
+    c.style.height = dispH + "px";
+    c.style.left = left + "px";
+    c.style.top = top + "px";
+  });
+}
+
+btnNewMap.addEventListener("click", () => {
+  setRunning(false);
+  selectedBot = null;
+  document.getElementById("inspector").classList.remove("show");
+  resizeAndInit();
+  sealevel = parseInt(sealevelInput.value, 10);
+  generateMap((Math.random() * 10000) | 0);
+  generateAdam();
+  paintTerrain();
+  render();
+  closeSidebar();
+});
+
+let resizeTimer = null;
+function scheduleRefit() {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(fitCanvases, 80);
+}
+window.addEventListener("resize", scheduleRefit);
+window.addEventListener("orientationchange", scheduleRefit);
+
+/* ------------------------------ Мобильное меню ---------------------------- */
+const sidebarEl = document.getElementById("sidebar");
+const backdropEl = document.getElementById("backdrop");
+const btnMenu = document.getElementById("btn-menu");
+const btnSidebarClose = document.getElementById("btn-sidebar-close");
+const isMobile = () => window.matchMedia("(max-width: 860px)").matches;
+
+function openSidebar() {
+  sidebarEl.classList.add("open");
+  backdropEl.classList.add("show");
+}
+function closeSidebar() {
+  if (!isMobile()) return;
+  sidebarEl.classList.remove("open");
+  backdropEl.classList.remove("show");
+}
+btnMenu.addEventListener("click", () => {
+  sidebarEl.classList.contains("open") ? closeSidebar() : openSidebar();
+});
+btnSidebarClose.addEventListener("click", closeSidebar);
+backdropEl.addEventListener("click", closeSidebar);
+
+// на маленьких/слабых экранах по умолчанию берём более крупную (быструю) сетку
+if (isMobile()) detailInput.value = "8";
+
+/* ------------------------------ Окно "Правила" ---------------------------- */
+const rulesBackdrop = document.getElementById("rules-backdrop");
+const btnRules = document.getElementById("btn-rules");
+const btnRulesClose = document.getElementById("btn-rules-close");
+
+function openRules() { rulesBackdrop.classList.add("show"); }
+function closeRules() { rulesBackdrop.classList.remove("show"); }
+
+btnRules.addEventListener("click", openRules);
+btnRulesClose.addEventListener("click", closeRules);
+rulesBackdrop.addEventListener("click", (e) => { if (e.target === rulesBackdrop) closeRules(); });
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && rulesBackdrop.classList.contains("show")) closeRules();
+});
+
+/* ------------------------------ Инспектор -------------------------------- */
+let selectedBot = null;
+
+function cmdColor(v) {
+  if ([0,16,23,26,32,33,34,36,37,38,39,40,41,42,43,46,47,48,52].includes(v)) return "#4fd1c5";
+  return "#3a4152";
+}
+function refreshInspector() {
+  // если выбранный бот съеден/удалён — grid больше не указывает на него
+  if (grid[idx(selectedBot.x, selectedBot.y)] !== selectedBot) {
+    document.getElementById("inspector").classList.remove("show");
+    selectedBot = null;
+    return;
+  }
+  const t = document.getElementById("insp-table");
+  const rows = [
+    ["Статус", selectedBot.alive === 3 ? "жив" : "органика"],
+    ["Возраст", selectedBot.age],
+    ["Энергия", selectedBot.health],
+    ["Минералы", selectedBot.mineral],
+    ["Направление", selectedBot.dir],
+    ["Координаты", selectedBot.x + ", " + selectedBot.y],
+  ];
+  t.innerHTML = rows.map(([k,v]) => `<tr><td class="k">${k}</td><td class="v">${v}</td></tr>`).join("");
+
+  const g = document.getElementById("genome-grid");
+  g.innerHTML = "";
+  for (let i = 0; i < MIND_SIZE; i++) {
+    const cell = document.createElement("div");
+    const v = selectedBot.mind[i];
+    cell.style.background = cmdColor(v);
+    cell.style.outline = i === selectedBot.adr ? "1px solid #f2a65a" : "none";
+    cell.textContent = v;
+    g.appendChild(cell);
+  }
+}
+document.getElementById("insp-close").addEventListener("click", () => {
+  selectedBot = null;
+  document.getElementById("inspector").classList.remove("show");
+});
+botsCanvas.addEventListener("click", (e) => {
+  const rect = botsCanvas.getBoundingClientRect();
+  const x = clamp(Math.floor((e.clientX - rect.left) / rect.width * W), 0, W - 1);
+  const y = clamp(Math.floor((e.clientY - rect.top) / rect.height * H), 0, H - 1);
+  const bot = grid[idx(x, y)];
+  if (bot) {
+    selectedBot = bot;
+    document.getElementById("inspector").classList.add("show");
+    refreshInspector();
+  }
+});
+
+/* ------------------------------ Главный цикл ------------------------------ */
+let lastTpsCheck = performance.now();
+let ticksSinceCheck = 0;
+
+function loop() {
+  if (running) {
+    const stepsPerFrame = parseInt(speedInput.value, 10);
+    const budgetMs = 40; // не даём одному кадру "залипнуть" при большой популяции
+    const start = performance.now();
+    let done = 0;
+    while (done < stepsPerFrame && (performance.now() - start) < budgetMs) {
+      tick();
+      done++;
+      ticksSinceCheck++;
+    }
+    render();
+  }
+  const now = performance.now();
+  if (now - lastTpsCheck > 1000) {
+    document.getElementById("s-tps").textContent = ticksSinceCheck;
+    ticksSinceCheck = 0;
+    lastTpsCheck = now;
+  }
+  requestAnimationFrame(loop);
+}
+
+/* -------------------------------- Старт ----------------------------------- */
+resizeAndInit();
+generateMap((Math.random() * 10000) | 0);
+generateAdam();
+paintTerrain();
+render();
+requestAnimationFrame(loop);
+
+})();
+</script>
+</body>
+</html>

@@ -276,7 +276,8 @@ window.SITE_PROJECTS = [
     worlds: [
       { id: "1", file: "assets/bots/world-1.html" },
       { id: "2", file: "assets/bots/world-2.html" },
-      { id: "3", file: "assets/bots/world-3.html" }
+      { id: "3", file: "assets/bots/world-3.html" },
+      { id: "4", file: "assets/bots/world-4.html", label: "Genesis" }
     ]
   },
   {

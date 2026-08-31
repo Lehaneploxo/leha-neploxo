@@ -66,8 +66,13 @@
 
   /* ------------------------------------------------------- world cards */
 
+  function worldLabel(world) {
+    var base = window.t("project.world.number") + " " + world.id;
+    return world.label ? base + " — " + world.label : base;
+  }
+
   function worldCardHTML(project, world, i) {
-    var label = window.t("project.world.number") + " " + world.id;
+    var label = worldLabel(world);
     return (
       '<a class="wcard" data-reveal="scale" style="transition-delay:' + (i * 90) + 'ms" href="world.html?project=' + project.id + '&world=' + world.id + '">' +
         '<span class="wcard__visual"><span class="cyber-visual__grid"></span></span>' +
@@ -191,15 +196,17 @@
       return;
     }
 
-    var label = window.t("project.world.number") + " " + world.id;
+    var label = worldLabel(world);
     document.title = label + " — LEHA NEPLOXO";
 
     root.innerHTML =
-      '<a class="world__back" href="project.html?id=' + project.id + '">' +
-        '<svg viewBox="0 0 24 24" fill="none"><path d="M5 19L19 5M19 5H8M19 5V16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(180deg);transform-origin:center"/></svg>' +
-        '<span>' + window.t("world.back") + '</span>' +
-      '</a>' +
-      '<div class="world__label">' + label + '</div>' +
+      '<div class="world__bar">' +
+        '<a class="world__back" href="project.html?id=' + project.id + '">' +
+          '<svg viewBox="0 0 24 24" fill="none"><path d="M5 19L19 5M19 5H8M19 5V16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(180deg);transform-origin:center"/></svg>' +
+          '<span>' + window.t("world.back") + '</span>' +
+        '</a>' +
+        '<div class="world__label">' + label + '</div>' +
+      '</div>' +
       '<iframe class="world__frame" src="' + world.file + '" title="' + label + '" loading="eager"></iframe>';
   };
 
