@@ -265,9 +265,9 @@ window.SITE_I18N = {
 window.SITE_PROJECTS = [
   {
     id: "cyber-biology",
-    image: null,
+    image: "assets/img/cyber-biology.png",
     video: null,
-    cyberVisual: true,
+    cyberVisual: false,
     titleKey: "projects.cyber.title",
     categoryKey: "projects.cyber.category",
     dateKey: "projects.cyber.date",
