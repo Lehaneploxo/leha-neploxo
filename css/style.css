@@ -858,26 +858,7 @@ body.world-body main[data-world-page] { display: flex; flex-direction: column; h
   display: flex; flex-direction: column; align-items: center;
 }
 .support__text { max-width: 56ch; color: var(--text-dim); font-size: clamp(14px, 1.6vw, 17px); margin-top: 16px; }
-.support__methods {
-  margin-top: 40px;
-  display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
-  width: 100%; max-width: 520px;
-}
-.smethod {
-  padding: 16px; border-radius: var(--radius-s);
-  border: 1px dashed var(--border);
-  font-size: 12px; letter-spacing: .06em; color: var(--text-faint);
-  display: flex; flex-direction: column; gap: 6px; align-items: center;
-}
-.smethod b { color: var(--text-dim); font-weight: 600; font-size: 13px; }
-.smethod span { font-size: 10px; text-transform: uppercase; letter-spacing: .18em; color: var(--accent); }
-.smethod--active {
-  border-style: solid; border-color: var(--accent-dim); background: var(--panel);
-  cursor: pointer; transition: transform .3s var(--ease), border-color .3s var(--ease), background .3s var(--ease);
-}
-.smethod--active:hover { transform: translateY(-3px); border-color: var(--accent); background: var(--panel-strong); }
-.smethod--active b { color: var(--text); }
-.smethod--active span { color: var(--accent-bright); }
+.support__via { margin-top: 14px; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-faint); }
 
 .toast {
   position: fixed;
@@ -982,7 +963,6 @@ body.world-body main[data-world-page] { display: flex; flex-direction: column; h
 /* ===================== BREAKPOINTS ===================== */
 
 @media (min-width: 560px) {
-  .support__methods { grid-template-columns: repeat(4, 1fr); }
   .footer__cols { grid-template-columns: repeat(2, 1fr); }
 }
 
