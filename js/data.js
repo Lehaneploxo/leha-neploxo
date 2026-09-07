@@ -17,7 +17,7 @@ window.SITE_I18N = {
     "hero.kicker": "Personal creator",
     "hero.subtitle": "Digital projects / Content",
     "hero.cta.primary": "MY PROJECTS",
-    "hero.cta.secondary": "Підтримати проєкт",
+    "hero.cta.secondary": "Підтримати автора",
     "hero.scroll": "Scroll",
 
     "about.label": "ABOUT",
@@ -64,7 +64,7 @@ window.SITE_I18N = {
     "support.label": "SUPPORT",
     "support.title": "Підтримка проєкту",
     "support.text": "Якщо контент відгукується — підтримка допомагає створювати більше.",
-    "support.cta": "Підтримати проєкт",
+    "support.cta": "Підтримати автора",
     "support.via": "через Monobank",
 
     "footer.tagline": "Personal creator / Digital projects / Content",
@@ -115,7 +115,7 @@ window.SITE_I18N = {
     "hero.kicker": "Personal creator",
     "hero.subtitle": "Digital projects / Content",
     "hero.cta.primary": "MY PROJECTS",
-    "hero.cta.secondary": "Поддержать проект",
+    "hero.cta.secondary": "Поддержать автора",
     "hero.scroll": "Scroll",
 
     "about.label": "ABOUT",
@@ -162,7 +162,7 @@ window.SITE_I18N = {
     "support.label": "SUPPORT",
     "support.title": "Поддержка проекта",
     "support.text": "Если контент откликается — поддержка помогает создавать больше.",
-    "support.cta": "Поддержать проект",
+    "support.cta": "Поддержать автора",
     "support.via": "через Monobank",
 
     "footer.tagline": "Personal creator / Digital projects / Content",
@@ -213,7 +213,7 @@ window.SITE_I18N = {
     "hero.kicker": "Personal creator",
     "hero.subtitle": "Digital projects / Content",
     "hero.cta.primary": "MY PROJECTS",
-    "hero.cta.secondary": "Support the project",
+    "hero.cta.secondary": "Support the author",
     "hero.scroll": "Scroll",
 
     "about.label": "ABOUT",
@@ -260,7 +260,7 @@ window.SITE_I18N = {
     "support.label": "SUPPORT",
     "support.title": "Support the project",
     "support.text": "If the content resonates, support helps create more of it.",
-    "support.cta": "Support the project",
+    "support.cta": "Support the author",
     "support.via": "via Monobank",
 
     "footer.tagline": "Personal creator / Digital projects / Content",
