@@ -7,14 +7,14 @@
 
   var ARROW = '<svg viewBox="0 0 24 24" fill="none"><path d="M5 19L19 5M19 5H8M19 5V16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-  function mediaMarkup(project, cls) {
+  function mediaMarkup(project, cls, alt) {
     if (project.cyberVisual) {
       return '<div class="' + cls + ' cyber-visual"><span class="cyber-visual__grid"></span><span class="cyber-visual__glyphs">01</span></div>';
     }
     if (project.video) {
       return '<video class="' + cls + '" src="' + project.video + '" poster="' + project.image + '" muted loop playsinline preload="metadata"></video>';
     }
-    return '<img class="' + cls + '" src="' + project.image + '" alt="" loading="lazy">';
+    return '<img class="' + cls + '" src="' + project.image + '" alt="' + (alt || "") + '" loading="lazy">';
   }
 
   function cardHTML(project, i) {
@@ -30,7 +30,7 @@
     return (
       '<article class="pcard" data-reveal="scale" style="transition-delay:' + (i * 90) + 'ms">' +
         (badge ? '<div class="pcard__index">' + badge + '</div>' : "") +
-        '<div class="pcard__media">' + mediaMarkup(project, "") + '</div>' +
+        '<div class="pcard__media">' + mediaMarkup(project, "", title) + '</div>' +
         '<div class="pcard__glow"></div>' +
         '<div class="pcard__scrim"></div>' +
         '<div class="pcard__body">' +
@@ -131,7 +131,7 @@
 
     root.innerHTML =
       '<section class="phero">' +
-        '<div class="phero__media">' + mediaMarkup(project, "") + '</div>' +
+        '<div class="phero__media">' + mediaMarkup(project, "", title) + '</div>' +
         '<div class="phero__scrim"></div>' +
         '<div class="phero__content wrap">' +
           '<a class="phero__back" href="index.html#projects">' +
