@@ -45,10 +45,6 @@ window.SITE_I18N = {
     "socials.label": "FOLLOW ME",
     "socials.title": "Соціальні мережі",
     "socials.sub": "Офіційні акаунти LEHA NEPLOXO.",
-    "socials.tiktok.sub": "Відео та контент",
-    "socials.instagram.sub": "Фото та моменти",
-    "socials.telegram.sub": "Новини та зв’язок",
-    "socials.youtube.sub": "Відео та стріми",
 
     "support.label": "SUPPORT",
     "support.title": "SUPPORT THE AUTHOR",
@@ -138,10 +134,6 @@ window.SITE_I18N = {
     "socials.label": "FOLLOW ME",
     "socials.title": "Социальные сети",
     "socials.sub": "Официальные аккаунты LEHA NEPLOXO.",
-    "socials.tiktok.sub": "Видео и контент",
-    "socials.instagram.sub": "Фото и моменты",
-    "socials.telegram.sub": "Новости и связь",
-    "socials.youtube.sub": "Видео и стримы",
 
     "support.label": "SUPPORT",
     "support.title": "SUPPORT THE AUTHOR",
@@ -231,10 +223,6 @@ window.SITE_I18N = {
     "socials.label": "FOLLOW ME",
     "socials.title": "Social media",
     "socials.sub": "Official LEHA NEPLOXO accounts.",
-    "socials.tiktok.sub": "Video & content",
-    "socials.instagram.sub": "Photos & moments",
-    "socials.telegram.sub": "News & contact",
-    "socials.youtube.sub": "Video & streams",
 
     "support.label": "SUPPORT",
     "support.title": "SUPPORT THE AUTHOR",
