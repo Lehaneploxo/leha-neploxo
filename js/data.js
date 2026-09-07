@@ -58,7 +58,7 @@ window.SITE_I18N = {
 
     "ads.label": "ADVERTISING",
     "ads.title": "Реклама та колаборації",
-    "ads.text": "Розміщую рекламні інтеграції в TikTok, Instagram та YouTube — під формат і аудиторію кожної площадки.",
+    "ads.text": "Розміщую рекламні інтеграції в TikTok, Instagram, YouTube та Facebook — під формат і аудиторію кожної площадки.",
     "ads.cta": "Замовити рекламу",
 
     "support.label": "SUPPORT",
@@ -161,7 +161,7 @@ window.SITE_I18N = {
 
     "ads.label": "ADVERTISING",
     "ads.title": "Реклама и коллаборации",
-    "ads.text": "Размещаю рекламные интеграции в TikTok, Instagram и YouTube — под формат и аудиторию каждой площадки.",
+    "ads.text": "Размещаю рекламные интеграции в TikTok, Instagram, YouTube и Facebook — под формат и аудиторию каждой площадки.",
     "ads.cta": "Заказать рекламу",
 
     "support.label": "SUPPORT",
@@ -264,7 +264,7 @@ window.SITE_I18N = {
 
     "ads.label": "ADVERTISING",
     "ads.title": "Advertising & collabs",
-    "ads.text": "Ad placements and integrations across TikTok, Instagram and YouTube — tailored to each platform's format and audience.",
+    "ads.text": "Ad placements and integrations across TikTok, Instagram, YouTube and Facebook — tailored to each platform's format and audience.",
     "ads.cta": "Order advertising",
 
     "support.label": "SUPPORT",

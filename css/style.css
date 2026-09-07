@@ -982,7 +982,7 @@ body.world-body main[data-world-page] { display: flex; flex-direction: column; h
 @media (min-width: 760px) {
   .about__grid { grid-template-columns: 0.85fr 1fr; gap: 48px; }
   .projects__grid { grid-template-columns: repeat(2, 1fr); }
-  .socials__grid { grid-template-columns: repeat(4, 1fr); }
+  .socials__grid { grid-template-columns: repeat(3, 1fr); }
   .svc-row { align-items: center; }
   .svc-row__body { display: flex; align-items: baseline; gap: 24px; flex: 1; }
   .svc-row__title { flex: 0 0 180px; margin-bottom: 0; }
