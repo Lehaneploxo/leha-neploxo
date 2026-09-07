@@ -74,7 +74,6 @@ window.SITE_I18N = {
 
     "projects.cyber.title": "CYBER BIOLOGY",
     "projects.cyber.category": "Digital evolution",
-    "projects.cyber.date": "2024 — 2025",
     "projects.cyber.desc": "Світи, де прості боти народжуються, борються за енергію та еволюціонують.",
     "projects.cyber.desc.long": "Серія експериментів зі штучною еволюцією: у кожному світі власні правила народження, голоду, розмноження та мутацій. Боти рухаються, шукають їжу і борються за виживання — без жодного сценарію, лише випадковість і код.",
     "project.worlds.label": "EXPERIMENTS",
@@ -163,7 +162,6 @@ window.SITE_I18N = {
 
     "projects.cyber.title": "CYBER BIOLOGY",
     "projects.cyber.category": "Digital evolution",
-    "projects.cyber.date": "2024 — 2025",
     "projects.cyber.desc": "Миры, где простые боты рождаются, борются за энергию и эволюционируют.",
     "projects.cyber.desc.long": "Серия экспериментов с искусственной эволюцией: в каждом мире свои правила рождения, голода, размножения и мутаций. Боты двигаются, ищут еду и борются за выживание — без сценария, только случайность и код.",
     "project.worlds.label": "EXPERIMENTS",
@@ -252,7 +250,6 @@ window.SITE_I18N = {
 
     "projects.cyber.title": "CYBER BIOLOGY",
     "projects.cyber.category": "Digital evolution",
-    "projects.cyber.date": "2024 — 2025",
     "projects.cyber.desc": "Worlds where simple bots are born, fight for energy, and evolve.",
     "projects.cyber.desc.long": "A series of artificial-evolution experiments: each world runs its own rules for birth, hunger, reproduction and mutation. Bots move, search for food and fight to survive — no script, just randomness and code.",
     "project.worlds.label": "EXPERIMENTS",
@@ -282,7 +279,7 @@ window.SITE_PROJECTS = [
     cyberVisual: false,
     titleKey: "projects.cyber.title",
     categoryKey: "projects.cyber.category",
-    dateKey: "projects.cyber.date",
+    dateKey: null,
     descKey: "projects.cyber.desc",
     descLongKey: "projects.cyber.desc.long",
     worlds: [

@@ -20,7 +20,7 @@
   function cardHTML(project, i) {
     var title = window.t(project.titleKey);
     var category = window.t(project.categoryKey || "projects.card.category");
-    var date = window.t(project.dateKey || "projects.card.date");
+    var date = project.dateKey === null ? "" : window.t(project.dateKey || "projects.card.date");
     var desc = window.t(project.descKey || "projects.card.desc");
     var cta = window.t(project.ctaKey || "projects.card.cta");
     var badge = /^\d+$/.test(project.id) ? "0" + project.id : "";
@@ -34,7 +34,7 @@
         '<div class="pcard__glow"></div>' +
         '<div class="pcard__scrim"></div>' +
         '<div class="pcard__body">' +
-          '<div class="pcard__meta"><span>' + category + '</span><span>' + date + '</span></div>' +
+          '<div class="pcard__meta"><span>' + category + '</span>' + (date ? '<span>' + date + '</span>' : "") + '</div>' +
           '<h3 class="pcard__title">' + title + '</h3>' +
           '<p class="pcard__desc">' + desc + '</p>' +
           '<span class="pcard__cta">' + cta + ' ' + ARROW + '</span>' +
@@ -110,7 +110,7 @@
 
     var title = window.t(project.titleKey);
     var category = window.t(project.categoryKey || "projects.card.category");
-    var date = window.t(project.dateKey || "projects.card.date");
+    var date = project.dateKey === null ? "" : window.t(project.dateKey || "projects.card.date");
     var about = window.t(project.descLongKey || project.descKey || "project.placeholder");
     document.title = title + " — LEHA NEPLOXO";
 
@@ -152,7 +152,7 @@
           '<h1 class="phero__title">' + title + '</h1>' +
           '<div class="phero__meta">' +
             '<span>' + category + '</span>' +
-            '<span>' + date + '</span>' +
+            (date ? '<span>' + date + '</span>' : "") +
           '</div>' +
         '</div>' +
       '</section>' +
