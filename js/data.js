@@ -29,7 +29,6 @@ window.SITE_I18N = {
 
     "services.label": "SERVICES",
     "services.title": "Розробка на замовлення",
-    "services.sub": "Окрім контенту — роблю сайти, програми та боти під ваші задачі.",
     "services.card1.title": "Сайти",
     "services.card1.desc": "Лендинги та сайти під ключ — від дизайну до запуску.",
     "services.card2.title": "Програми",
@@ -128,7 +127,6 @@ window.SITE_I18N = {
 
     "services.label": "SERVICES",
     "services.title": "Разработка на заказ",
-    "services.sub": "Помимо контента — делаю сайты, программы и ботов под ваши задачи.",
     "services.card1.title": "Сайты",
     "services.card1.desc": "Лендинги и сайты под ключ — от дизайна до запуска.",
     "services.card2.title": "Программы",
@@ -227,7 +225,6 @@ window.SITE_I18N = {
 
     "services.label": "SERVICES",
     "services.title": "Development on demand",
-    "services.sub": "Besides content — I build websites, programs and bots for your needs.",
     "services.card1.title": "Websites",
     "services.card1.desc": "Landing pages and full sites — from design to launch.",
     "services.card2.title": "Programs",
