@@ -642,10 +642,7 @@ video[data-bgvideo].is-ready { opacity: 1; }
 .pcard__title { font-size: clamp(20px, 2.4vw, 28px); font-weight: 800; }
 .pcard__desc {
   color: var(--text-dim); font-size: 13px; max-width: 34ch;
-  max-height: 0; opacity: 0; overflow: hidden;
-  transition: max-height .5s var(--ease), opacity .4s var(--ease);
 }
-.pcard:hover .pcard__desc, .pcard:focus-within .pcard__desc { max-height: 60px; opacity: 1; }
 .pcard__cta {
   margin-top: 4px;
   display: inline-flex; align-items: center; gap: 8px;
