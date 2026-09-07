@@ -48,6 +48,7 @@ window.SITE_I18N = {
     "socials.tiktok.sub": "Відео та контент",
     "socials.instagram.sub": "Фото та моменти",
     "socials.telegram.sub": "Новини та зв’язок",
+    "socials.youtube.sub": "Відео та стріми",
 
     "support.label": "SUPPORT",
     "support.title": "SUPPORT THE AUTHOR",
@@ -86,6 +87,13 @@ window.SITE_I18N = {
     "project.world.enter": "УВІЙТИ У СВІТ",
     "project.world.number": "Світ ботів",
     "world.back": "НАЗАД ДО ПРОЄКТУ",
+
+    "projects.tiktokgame.title": "TIKTOK GAME LIVE",
+    "projects.tiktokgame.category": "Прямий ефір",
+    "projects.tiktokgame.date": "Наразі в ефірі",
+    "projects.tiktokgame.desc": "Ігровий канал у TikTok з прямими трансляціями.",
+    "projects.tiktokgame.desc.long": "Окремий TikTok-акаунт для ігрових стрімів у прямому ефірі. Заходьте, дивіться наживо та приєднуйтесь до чату під час трансляцій.",
+    "projects.tiktokgame.cta": "ДИВИТИСЬ ЕФІР",
 
     "meta.introTag": "Cinematic personal brand"
   },
@@ -133,6 +141,7 @@ window.SITE_I18N = {
     "socials.tiktok.sub": "Видео и контент",
     "socials.instagram.sub": "Фото и моменты",
     "socials.telegram.sub": "Новости и связь",
+    "socials.youtube.sub": "Видео и стримы",
 
     "support.label": "SUPPORT",
     "support.title": "SUPPORT THE AUTHOR",
@@ -171,6 +180,13 @@ window.SITE_I18N = {
     "project.world.enter": "ВОЙТИ В МИР",
     "project.world.number": "Мир ботов",
     "world.back": "НАЗАД К ПРОЕКТУ",
+
+    "projects.tiktokgame.title": "TIKTOK GAME LIVE",
+    "projects.tiktokgame.category": "Прямой эфир",
+    "projects.tiktokgame.date": "Сейчас в эфире",
+    "projects.tiktokgame.desc": "Игровой канал в TikTok с прямыми трансляциями.",
+    "projects.tiktokgame.desc.long": "Отдельный TikTok-аккаунт для игровых стримов в прямом эфире. Заходите, смотрите вживую и присоединяйтесь к чату во время трансляций.",
+    "projects.tiktokgame.cta": "СМОТРЕТЬ ЭФИР",
 
     "meta.introTag": "Cinematic personal brand"
   },
@@ -218,6 +234,7 @@ window.SITE_I18N = {
     "socials.tiktok.sub": "Video & content",
     "socials.instagram.sub": "Photos & moments",
     "socials.telegram.sub": "News & contact",
+    "socials.youtube.sub": "Video & streams",
 
     "support.label": "SUPPORT",
     "support.title": "SUPPORT THE AUTHOR",
@@ -257,6 +274,13 @@ window.SITE_I18N = {
     "project.world.number": "Bot World",
     "world.back": "BACK TO PROJECT",
 
+    "projects.tiktokgame.title": "TIKTOK GAME LIVE",
+    "projects.tiktokgame.category": "Livestream",
+    "projects.tiktokgame.date": "Live now",
+    "projects.tiktokgame.desc": "A gaming TikTok channel with live broadcasts.",
+    "projects.tiktokgame.desc.long": "A separate TikTok account for live gaming streams. Drop in, watch live and join the chat during broadcasts.",
+    "projects.tiktokgame.cta": "WATCH LIVE",
+
     "meta.introTag": "Cinematic personal brand"
   }
 };
@@ -279,6 +303,18 @@ window.SITE_PROJECTS = [
       { id: "3", file: "assets/bots/world-3.html" },
       { id: "4", file: "assets/bots/world-4.html", label: "Genesis" }
     ]
+  },
+  {
+    id: "tiktok-game-live",
+    image: "assets/img/portrait-hero.png",
+    video: null,
+    externalUrl: "https://www.tiktok.com/@tiktokgame8805",
+    titleKey: "projects.tiktokgame.title",
+    categoryKey: "projects.tiktokgame.category",
+    dateKey: "projects.tiktokgame.date",
+    descKey: "projects.tiktokgame.desc",
+    descLongKey: "projects.tiktokgame.desc.long",
+    ctaKey: "projects.tiktokgame.cta"
   },
   {
     id: "01",

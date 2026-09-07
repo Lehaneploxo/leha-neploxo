@@ -22,7 +22,11 @@
     var category = window.t(project.categoryKey || "projects.card.category");
     var date = window.t(project.dateKey || "projects.card.date");
     var desc = window.t(project.descKey || "projects.card.desc");
+    var cta = window.t(project.ctaKey || "projects.card.cta");
     var badge = /^\d+$/.test(project.id) ? "0" + project.id : "";
+    var linkAttrs = project.externalUrl
+      ? 'href="' + project.externalUrl + '" target="_blank" rel="noopener"'
+      : 'href="project.html?id=' + project.id + '"';
     return (
       '<article class="pcard" data-reveal="scale" style="transition-delay:' + (i * 90) + 'ms">' +
         (badge ? '<div class="pcard__index">' + badge + '</div>' : "") +
@@ -33,9 +37,9 @@
           '<div class="pcard__meta"><span>' + category + '</span><span>' + date + '</span></div>' +
           '<h3 class="pcard__title">' + title + '</h3>' +
           '<p class="pcard__desc">' + desc + '</p>' +
-          '<span class="pcard__cta">' + window.t("projects.card.cta") + ' ' + ARROW + '</span>' +
+          '<span class="pcard__cta">' + cta + ' ' + ARROW + '</span>' +
         '</div>' +
-        '<a class="pcard__link" href="project.html?id=' + project.id + '" aria-label="' + title + '"></a>' +
+        '<a class="pcard__link" ' + linkAttrs + ' aria-label="' + title + '"></a>' +
       '</article>'
     );
   }
@@ -164,6 +168,7 @@
               '<a href="https://www.tiktok.com/@lehaneploxo" target="_blank" rel="noopener" style="color:var(--text)">TikTok ↗</a>' +
               '<a href="https://www.instagram.com/leha_neploxo" target="_blank" rel="noopener" style="color:var(--text)">Instagram ↗</a>' +
               '<a href="https://t.me/leha_neploxo" target="_blank" rel="noopener" style="color:var(--text)">Telegram ↗</a>' +
+              '<a href="https://www.youtube.com/@lehaneploxo" target="_blank" rel="noopener" style="color:var(--text)">YouTube ↗</a>' +
             '</p>' +
           '</div>' +
         '</div>' +
