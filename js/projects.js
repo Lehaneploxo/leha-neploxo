@@ -157,19 +157,10 @@
         '</div>' +
       '</section>' +
       '<section class="section wrap">' +
-        '<div class="pbody">' +
+        '<div class="pbody pbody--single">' +
           '<div class="pbody__panel" data-reveal>' +
             '<h3>' + window.t("project.about") + '</h3>' +
             '<p>' + about + '</p>' +
-          '</div>' +
-          '<div class="pbody__panel" data-reveal style="transition-delay:120ms">' +
-            '<h3>' + window.t("project.links") + '</h3>' +
-            '<p style="display:flex;flex-direction:column;gap:10px;margin:0">' +
-              '<a href="https://www.tiktok.com/@lehaneploxo" target="_blank" rel="noopener" style="color:var(--text)">TikTok ↗</a>' +
-              '<a href="https://www.instagram.com/leha_neploxo" target="_blank" rel="noopener" style="color:var(--text)">Instagram ↗</a>' +
-              '<a href="https://t.me/leha_neploxo" target="_blank" rel="noopener" style="color:var(--text)">Telegram ↗</a>' +
-              '<a href="https://www.youtube.com/@lehaneploxo" target="_blank" rel="noopener" style="color:var(--text)">YouTube ↗</a>' +
-            '</p>' +
           '</div>' +
         '</div>' +
         gallerySection +
