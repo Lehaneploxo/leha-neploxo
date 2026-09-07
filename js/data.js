@@ -22,7 +22,7 @@ window.SITE_I18N = {
 
     "about.label": "ABOUT",
     "about.title": "Хто такий LEHA NEPLOXO",
-    "about.intro": "Автор, контент-мейкер і людина за кадром. Паралельно з контентом займаюся розробкою — створюю сайти, програми та боти під задачі бізнесу і людей.",
+    "about.intro": "Автор, контент-мейкер і людина за кадром. Займаюся розробкою — створюю сайти, програми та боти під задачі бізнесу і людей.",
     "about.note": "Послуги розробки ↓",
     "hero.alt": "Портрет LEHA NEPLOXO",
     "about.alt": "Фото LEHA NEPLOXO для розділу About",
@@ -36,6 +36,8 @@ window.SITE_I18N = {
     "services.card2.desc": "Автоматизація та інструменти: десктоп- і веб-рішення під задачу.",
     "services.card3.title": "Боти",
     "services.card3.desc": "Telegram/Discord-боти, міні-ігри та автоматизація процесів.",
+    "services.card4.title": "ШІ-рішення",
+    "services.card4.desc": "Інтеграція нейромереж, автоматизація та ШІ-інструменти під ваші задачі.",
     "services.cta": "Замовити проєкт",
 
     "showcase.label": "SHOWCASE",
@@ -50,9 +52,6 @@ window.SITE_I18N = {
     "projects.card.date": "TBA",
     "projects.card.desc": "Опис проєкту буде додано найближчим часом.",
     "projects.card.cta": "VIEW PROJECT",
-    "projects.card.title.1": "PROJECT 01",
-    "projects.card.title.2": "PROJECT 02",
-    "projects.card.title.3": "PROJECT 03",
 
     "socials.label": "FOLLOW ME",
     "socials.title": "Соціальні мережі",
@@ -122,7 +121,7 @@ window.SITE_I18N = {
 
     "about.label": "ABOUT",
     "about.title": "Кто такой LEHA NEPLOXO",
-    "about.intro": "Автор, контент-мейкер и человек за кадром. Параллельно с контентом занимаюсь разработкой — создаю сайты, программы и ботов под задачи бизнеса и людей.",
+    "about.intro": "Автор, контент-мейкер и человек за кадром. Занимаюсь разработкой — создаю сайты, программы и ботов под задачи бизнеса и людей.",
     "about.note": "Услуги разработки ↓",
     "hero.alt": "Портрет LEHA NEPLOXO",
     "about.alt": "Фото LEHA NEPLOXO для раздела About",
@@ -136,6 +135,8 @@ window.SITE_I18N = {
     "services.card2.desc": "Автоматизация и инструменты: десктоп- и веб-решения под задачу.",
     "services.card3.title": "Боты",
     "services.card3.desc": "Telegram/Discord-боты, мини-игры и автоматизация процессов.",
+    "services.card4.title": "ИИ-решения",
+    "services.card4.desc": "Интеграция нейросетей, автоматизация и ИИ-инструменты под ваши задачи.",
     "services.cta": "Заказать проект",
 
     "showcase.label": "SHOWCASE",
@@ -150,9 +151,6 @@ window.SITE_I18N = {
     "projects.card.date": "TBA",
     "projects.card.desc": "Описание проекта будет добавлено в ближайшее время.",
     "projects.card.cta": "VIEW PROJECT",
-    "projects.card.title.1": "PROJECT 01",
-    "projects.card.title.2": "PROJECT 02",
-    "projects.card.title.3": "PROJECT 03",
 
     "socials.label": "FOLLOW ME",
     "socials.title": "Социальные сети",
@@ -222,7 +220,7 @@ window.SITE_I18N = {
 
     "about.label": "ABOUT",
     "about.title": "Who is LEHA NEPLOXO",
-    "about.intro": "Author, content creator and the person behind the camera. Alongside content, I also work as a developer — building websites, programs and bots for businesses and people.",
+    "about.intro": "Author, content creator and the person behind the camera. I also work as a developer — building websites, programs and bots for businesses and people.",
     "about.note": "Development services ↓",
     "hero.alt": "Portrait of LEHA NEPLOXO",
     "about.alt": "Photo of LEHA NEPLOXO for the About section",
@@ -236,6 +234,8 @@ window.SITE_I18N = {
     "services.card2.desc": "Automation and tools: desktop and web solutions built to spec.",
     "services.card3.title": "Bots",
     "services.card3.desc": "Telegram/Discord bots, mini-games and process automation.",
+    "services.card4.title": "AI solutions",
+    "services.card4.desc": "Neural network integrations, automation and AI-powered tools built to spec.",
     "services.cta": "Order a project",
 
     "showcase.label": "SHOWCASE",
@@ -250,9 +250,6 @@ window.SITE_I18N = {
     "projects.card.date": "TBA",
     "projects.card.desc": "Project description will be added soon.",
     "projects.card.cta": "VIEW PROJECT",
-    "projects.card.title.1": "PROJECT 01",
-    "projects.card.title.2": "PROJECT 02",
-    "projects.card.title.3": "PROJECT 03",
 
     "socials.label": "FOLLOW ME",
     "socials.title": "Social media",
@@ -336,23 +333,5 @@ window.SITE_PROJECTS = [
     descKey: "projects.tiktokgame.desc",
     descLongKey: "projects.tiktokgame.desc.long",
     ctaKey: "projects.tiktokgame.cta"
-  },
-  {
-    id: "01",
-    image: "assets/img/lifestyle-mountain.png",
-    video: null,
-    titleKey: "projects.card.title.1"
-  },
-  {
-    id: "02",
-    image: "assets/img/lifestyle-car.png",
-    video: null,
-    titleKey: "projects.card.title.2"
-  },
-  {
-    id: "03",
-    image: "assets/img/portrait-about.png",
-    video: "assets/video/showcase.mp4",
-    titleKey: "projects.card.title.3"
   }
 ];

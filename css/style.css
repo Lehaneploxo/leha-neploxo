@@ -819,25 +819,24 @@ body.world-body main[data-world-page] { display: flex; flex-direction: column; h
 
 /* SERVICES -------------------------------------------------------------- */
 
-.services__grid { display: grid; grid-template-columns: 1fr; gap: 18px; margin-top: 40px; }
-.svc {
-  padding: clamp(24px, 3vw, 32px);
+.services__list {
+  margin-top: 40px;
   border-radius: var(--radius-m);
   border: 1px solid var(--border);
   background: var(--panel);
-  transition: border-color .4s var(--ease), background .4s var(--ease), transform .5s var(--ease);
+  overflow: hidden;
 }
-.svc:hover { transform: translateY(-4px); border-color: var(--accent-dim); background: var(--panel-strong); }
-.svc__icon {
-  width: 48px; height: 48px; margin-bottom: 18px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--bg-elev-2);
-  border: 1px solid var(--border);
+.svc-row {
+  display: flex; align-items: flex-start; gap: 18px;
+  padding: clamp(18px, 3vw, 24px) clamp(20px, 3vw, 32px);
+  border-bottom: 1px solid var(--border-soft);
+  transition: background .3s var(--ease);
 }
-.svc__icon svg { width: 20px; height: 20px; fill: var(--accent); }
-.svc__title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-.svc__desc { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+.svc-row:last-child { border-bottom: none; }
+.svc-row:hover { background: var(--panel-strong); }
+.svc-row__num { flex: none; font-size: 12px; font-weight: 700; letter-spacing: .1em; color: var(--accent); padding-top: 3px; }
+.svc-row__title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.svc-row__desc { font-size: 13px; color: var(--text-dim); line-height: 1.6; max-width: 60ch; }
 .services__cta { margin-top: 36px; }
 .about__note[href] { cursor: pointer; transition: color .3s var(--ease); }
 .about__note[href]:hover { color: var(--accent); }
@@ -987,7 +986,9 @@ body.world-body main[data-world-page] { display: flex; flex-direction: column; h
   .about__grid { grid-template-columns: 0.85fr 1fr; gap: 48px; }
   .projects__grid { grid-template-columns: repeat(2, 1fr); }
   .socials__grid { grid-template-columns: repeat(4, 1fr); }
-  .services__grid { grid-template-columns: repeat(3, 1fr); }
+  .svc-row { align-items: center; }
+  .svc-row__body { display: flex; align-items: baseline; gap: 24px; flex: 1; }
+  .svc-row__title { flex: 0 0 180px; margin-bottom: 0; }
   .worlds__grid { grid-template-columns: repeat(2, 1fr); }
   .footer__top { grid-template-columns: 1fr 2fr; align-items: start; }
   .pbody { grid-template-columns: 1.3fr 0.7fr; align-items: start; }

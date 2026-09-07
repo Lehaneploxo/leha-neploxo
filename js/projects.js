@@ -129,17 +129,6 @@
         '</section>';
     }
 
-    var gallerySection = "";
-    if (!project.worlds) {
-      var siblings = (window.SITE_PROJECTS || []).filter(function (p) { return p.id !== project.id && p.image; });
-      if (siblings.length) {
-        gallerySection =
-          '<div class="pgallery">' +
-            siblings.map(function (p, i) { return '<img class="' + (i === 0 ? "wide" : "") + '" data-reveal="scale" style="transition-delay:' + (i * 100) + 'ms" src="' + p.image + '" alt="" loading="lazy">'; }).join("") +
-          '</div>';
-      }
-    }
-
     root.innerHTML =
       '<section class="phero">' +
         '<div class="phero__media">' + mediaMarkup(project, "") + '</div>' +
@@ -163,7 +152,6 @@
             '<p>' + about + '</p>' +
           '</div>' +
         '</div>' +
-        gallerySection +
       '</section>' +
       worldsSection;
 
