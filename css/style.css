@@ -871,6 +871,13 @@ body.world-body main[data-world-page] { display: flex; flex-direction: column; h
 }
 .smethod b { color: var(--text-dim); font-weight: 600; font-size: 13px; }
 .smethod span { font-size: 10px; text-transform: uppercase; letter-spacing: .18em; color: var(--accent); }
+.smethod--active {
+  border-style: solid; border-color: var(--accent-dim); background: var(--panel);
+  cursor: pointer; transition: transform .3s var(--ease), border-color .3s var(--ease), background .3s var(--ease);
+}
+.smethod--active:hover { transform: translateY(-3px); border-color: var(--accent); background: var(--panel-strong); }
+.smethod--active b { color: var(--text); }
+.smethod--active span { color: var(--accent-bright); }
 
 .toast {
   position: fixed;

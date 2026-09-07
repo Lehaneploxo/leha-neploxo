@@ -96,7 +96,6 @@
     initTilt();
     initCardVideos();
     initLightbox();
-    initSupportToast();
     initPageTransitions();
     initFooterYear();
     if (typeof window.renderProjects === "function") window.renderProjects();
@@ -312,21 +311,6 @@
     closeBtn.addEventListener("click", close);
     lightbox.addEventListener("click", function (e) { if (e.target === lightbox) close(); });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
-  }
-
-  /* -------------------------------------------------------- support cta */
-
-  function initSupportToast() {
-    var toast = qs(".toast");
-    var btn = qs("[data-support-cta]");
-    if (!toast || !btn) return;
-    var timer;
-    btn.addEventListener("click", function () {
-      toast.textContent = t("support.toast");
-      toast.classList.add("is-visible");
-      clearTimeout(timer);
-      timer = setTimeout(function () { toast.classList.remove("is-visible"); }, 2600);
-    });
   }
 
   /* --------------------------------------------------- page transitions */
