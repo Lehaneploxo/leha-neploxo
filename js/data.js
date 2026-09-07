@@ -46,7 +46,7 @@ window.SITE_I18N = {
 
     "projects.label": "PORTFOLIO",
     "projects.title": "MY PROJECTS",
-    "projects.sub": "Простір для проєктів, які скоро тут з’являться.",
+    "projects.sub": "Портфоліо завершених і поточних проєктів.",
     "projects.card.category": "Скоро",
     "projects.card.date": "TBA",
     "projects.card.desc": "Опис проєкту буде додано найближчим часом.",
@@ -144,7 +144,7 @@ window.SITE_I18N = {
 
     "projects.label": "PORTFOLIO",
     "projects.title": "MY PROJECTS",
-    "projects.sub": "Пространство для проектов, которые скоро здесь появятся.",
+    "projects.sub": "Портфолио завершённых и текущих проектов.",
     "projects.card.category": "Скоро",
     "projects.card.date": "TBA",
     "projects.card.desc": "Описание проекта будет добавлено в ближайшее время.",
@@ -242,7 +242,7 @@ window.SITE_I18N = {
 
     "projects.label": "PORTFOLIO",
     "projects.title": "MY PROJECTS",
-    "projects.sub": "Space for projects that will appear here soon.",
+    "projects.sub": "Portfolio of finished and ongoing projects.",
     "projects.card.category": "Coming soon",
     "projects.card.date": "TBA",
     "projects.card.desc": "Project description will be added soon.",
