@@ -100,6 +100,13 @@ window.SITE_I18N = {
     "projects.tiktokgame.desc.long": "Інтерактивна гра в прямому ефірі TikTok, де ти керуєш своїм персонажем і прокачуєш його рівень.",
     "projects.tiktokgame.cta": "ДИВИТИСЬ ЕФІР",
 
+    "projects.lehagame.title": "LEHA NEPLOXO GAME",
+    "projects.lehagame.category": "Браузерна RPG",
+    "projects.lehagame.date": "Грай онлайн",
+    "projects.lehagame.desc": "Онлайн RPG у браузері з власним світом, де гравці розвиваються, досліджують і спілкуються між собою.",
+    "projects.lehagame.desc.long": "Онлайн RPG у браузері з власним світом, де гравці розвиваються, досліджують і спілкуються між собою.",
+    "projects.lehagame.cta": "ГРАТИ",
+
     "meta.introTag": "Cinematic personal brand"
   },
 
@@ -197,6 +204,13 @@ window.SITE_I18N = {
     "projects.tiktokgame.desc": "Интерактивная игра в прямом эфире TikTok, где ты управляешь своим персонажем и прокачиваешь его уровень.",
     "projects.tiktokgame.desc.long": "Интерактивная игра в прямом эфире TikTok, где ты управляешь своим персонажем и прокачиваешь его уровень.",
     "projects.tiktokgame.cta": "СМОТРЕТЬ ЭФИР",
+
+    "projects.lehagame.title": "LEHA NEPLOXO GAME",
+    "projects.lehagame.category": "Браузерная RPG",
+    "projects.lehagame.date": "Играй онлайн",
+    "projects.lehagame.desc": "Онлайн RPG в браузере со своим миром, где игроки развиваются, исследуют и общаются между собой.",
+    "projects.lehagame.desc.long": "Онлайн RPG в браузере со своим миром, где игроки развиваются, исследуют и общаются между собой.",
+    "projects.lehagame.cta": "ИГРАТЬ",
 
     "meta.introTag": "Cinematic personal brand"
   },
@@ -296,12 +310,43 @@ window.SITE_I18N = {
     "projects.tiktokgame.desc.long": "An interactive game live on TikTok, where you control your character and level them up.",
     "projects.tiktokgame.cta": "WATCH LIVE",
 
+    "projects.lehagame.title": "LEHA NEPLOXO GAME",
+    "projects.lehagame.category": "Browser RPG",
+    "projects.lehagame.date": "Play online",
+    "projects.lehagame.desc": "An online browser RPG with its own world, where players grow, explore and chat with each other.",
+    "projects.lehagame.desc.long": "An online browser RPG with its own world, where players grow, explore and chat with each other.",
+    "projects.lehagame.cta": "PLAY NOW",
+
     "meta.introTag": "Cinematic personal brand"
   }
 };
 
 /* Real projects + placeholder demo cards for future content. */
 window.SITE_PROJECTS = [
+  {
+    id: "leha-game",
+    image: "assets/img/leha-game.webp",
+    video: null,
+    externalUrl: "https://gameleha.xyz",
+    titleKey: "projects.lehagame.title",
+    categoryKey: "projects.lehagame.category",
+    dateKey: "projects.lehagame.date",
+    descKey: "projects.lehagame.desc",
+    descLongKey: "projects.lehagame.desc.long",
+    ctaKey: "projects.lehagame.cta"
+  },
+  {
+    id: "tiktok-game-live",
+    image: "assets/img/street-fighters-tiktok.jpg",
+    video: null,
+    externalUrl: "https://www.tiktok.com/@tiktokgame8805",
+    titleKey: "projects.tiktokgame.title",
+    categoryKey: "projects.tiktokgame.category",
+    dateKey: "projects.tiktokgame.date",
+    descKey: "projects.tiktokgame.desc",
+    descLongKey: "projects.tiktokgame.desc.long",
+    ctaKey: "projects.tiktokgame.cta"
+  },
   {
     id: "cyber-biology",
     image: "assets/img/cyber-biology.webp",
@@ -318,17 +363,5 @@ window.SITE_PROJECTS = [
       { id: "3", file: "assets/bots/world-3.html" },
       { id: "4", file: "assets/bots/world-4.html", label: "Genesis" }
     ]
-  },
-  {
-    id: "tiktok-game-live",
-    image: "assets/img/street-fighters-tiktok.jpg",
-    video: null,
-    externalUrl: "https://www.tiktok.com/@tiktokgame8805",
-    titleKey: "projects.tiktokgame.title",
-    categoryKey: "projects.tiktokgame.category",
-    dateKey: "projects.tiktokgame.date",
-    descKey: "projects.tiktokgame.desc",
-    descLongKey: "projects.tiktokgame.desc.long",
-    ctaKey: "projects.tiktokgame.cta"
   }
 ];
