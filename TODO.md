@@ -43,4 +43,6 @@
 - [x] Настроен DNS (4 A-записи на GitHub Pages IP + CNAME для www)
 - [x] Подключён custom domain на GitHub Pages, SSL-сертификат выпущен, HTTPS принудительно включён
 - [x] Постеры видео заменены на реальные стоп-кадры из тех же сцен (Hero — море/скалы, Showcase — закат) вместо несовпадающих фото
-- [ ] Google/поисковики ещё не проиндексировали новый домен — нормально для только что купленного домена, можно ускорить через Google Search Console
+- [x] Google Search Console — 2026-10-01: сайт подтверждён (файл google70180925a7012062.html — не удалять!), sitemap отправлен, запрошено индексирование /, /ua/, /en/. Главная уже была в индексе
+- [x] SEO — 2026-10-01: отдельные страницы / (RU), /ua/, /en/ с hreflang, кириллица «Леха Неплохо» в title/description/About. После правки js/data.js или index.html запускать: node tools/build-langs.js
+- [ ] Поставить ссылку lehaneploxo.com в описание TikTok / Instagram / YouTube / Telegram (делает Леха сам)
