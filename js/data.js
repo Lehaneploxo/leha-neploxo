@@ -100,11 +100,11 @@ window.SITE_I18N = {
     "projects.tiktokgame.desc.long": "Інтерактивна гра в прямому ефірі TikTok, де ти керуєш своїм персонажем і прокачуєш його рівень.",
     "projects.tiktokgame.cta": "ДИВИТИСЬ ЕФІР",
 
-    "projects.lehagame.title": "LEHA NEPLOXO GAME",
-    "projects.lehagame.category": "Браузерна RPG",
+    "projects.lehagame.title": "LEHA NEPLOXO WORLD",
+    "projects.lehagame.category": "Онлайн RP · Відкритий світ",
     "projects.lehagame.date": "Грай онлайн",
-    "projects.lehagame.desc": "Онлайн RPG у браузері з власним світом, де гравці розвиваються, досліджують і спілкуються між собою.",
-    "projects.lehagame.desc.long": "Онлайн RPG у браузері з власним світом, де гравці розвиваються, досліджують і спілкуються між собою.",
+    "projects.lehagame.desc": "Ціле місто у твоєму браузері: пальми, неон, океан і живі гравці. Ставай копом, медиком, пожежником чи бізнесменом, а далі вирішуй сам, ким стати.",
+    "projects.lehagame.desc.long": "Ласкаво просимо до LEHA NEPLOXO WORLD — сонячного неонового мегаполіса біля океану з повністю відкритим світом. Кожен, кого ти зустрічаєш на вулицях, — реальний гравець. Купуй квартири й будинки, заробляй і будуй свій статок. Вступай на службу в поліцію, рятуй життя у швидкій допомозі або гаси пожежі разом із командою. Ганяй набережною, відпочивай на пляжі, заводь друзів чи ворогів. Ким станеш ти — вирішувати тільки тобі. Грай прямо в браузері, нічого не завантажуючи.",
     "projects.lehagame.cta": "ГРАТИ",
 
     "meta.introTag": "Cinematic personal brand"
@@ -205,11 +205,11 @@ window.SITE_I18N = {
     "projects.tiktokgame.desc.long": "Интерактивная игра в прямом эфире TikTok, где ты управляешь своим персонажем и прокачиваешь его уровень.",
     "projects.tiktokgame.cta": "СМОТРЕТЬ ЭФИР",
 
-    "projects.lehagame.title": "LEHA NEPLOXO GAME",
-    "projects.lehagame.category": "Браузерная RPG",
+    "projects.lehagame.title": "LEHA NEPLOXO WORLD",
+    "projects.lehagame.category": "Онлайн RP · Открытый мир",
     "projects.lehagame.date": "Играй онлайн",
-    "projects.lehagame.desc": "Онлайн RPG в браузере со своим миром, где игроки развиваются, исследуют и общаются между собой.",
-    "projects.lehagame.desc.long": "Онлайн RPG в браузере со своим миром, где игроки развиваются, исследуют и общаются между собой.",
+    "projects.lehagame.desc": "Целый город в твоём браузере: пальмы, неон, океан и живые игроки. Становись копом, медиком, пожарным или бизнесменом, а дальше решай сам, кем стать.",
+    "projects.lehagame.desc.long": "Добро пожаловать в LEHA NEPLOXO WORLD — солнечный неоновый мегаполис у океана с полностью открытым миром. Каждый, кого ты встречаешь на улицах, — реальный игрок. Покупай квартиры и дома, зарабатывай и строй своё состояние. Поступай на службу в полицию, спасай жизни в скорой помощи или туши пожары вместе с командой. Гоняй по набережной, отдыхай на пляже, заводи друзей или врагов. Кем станешь ты — решать только тебе. Играй прямо в браузере, ничего не скачивая.",
     "projects.lehagame.cta": "ИГРАТЬ",
 
     "meta.introTag": "Cinematic personal brand"
@@ -310,11 +310,11 @@ window.SITE_I18N = {
     "projects.tiktokgame.desc.long": "An interactive game live on TikTok, where you control your character and level them up.",
     "projects.tiktokgame.cta": "WATCH LIVE",
 
-    "projects.lehagame.title": "LEHA NEPLOXO GAME",
-    "projects.lehagame.category": "Browser RPG",
+    "projects.lehagame.title": "LEHA NEPLOXO WORLD",
+    "projects.lehagame.category": "Online RP · Open world",
     "projects.lehagame.date": "Play online",
-    "projects.lehagame.desc": "An online browser RPG with its own world, where players grow, explore and chat with each other.",
-    "projects.lehagame.desc.long": "An online browser RPG with its own world, where players grow, explore and chat with each other.",
+    "projects.lehagame.desc": "A whole city in your browser: palm trees, neon, the ocean and real players. Become a cop, a medic, a firefighter or a businessman — then decide for yourself who you want to be.",
+    "projects.lehagame.desc.long": "Welcome to LEHA NEPLOXO WORLD — a sunny neon metropolis by the ocean with a fully open world. Everyone you meet on the streets is a real player. Buy apartments and houses, make money and build your fortune. Join the police, save lives as a paramedic or fight fires with your crew. Cruise the boulevard, chill on the beach, make friends or enemies. Who you become is entirely up to you. Play right in your browser — no download needed.",
     "projects.lehagame.cta": "PLAY NOW",
 
     "meta.introTag": "Cinematic personal brand"
