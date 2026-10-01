@@ -21,11 +21,11 @@ window.SITE_I18N = {
     "hero.scroll": "Scroll",
 
     "about.label": "ABOUT",
-    "about.title": "Хто такий LEHA NEPLOXO",
-    "about.intro": "Автор, контент-мейкер і людина за кадром. Займаюся розробкою — створюю сайти, програми та боти під задачі бізнесу і людей.",
+    "about.title": "Хто такий Леха Неплохо",
+    "about.intro": "Леха Неплохо (LEHA NEPLOXO) — автор, контент-мейкер і людина за кадром. Займаюся розробкою — створюю сайти, програми та боти під задачі бізнесу і людей.",
     "about.note": "Послуги розробки ↓",
-    "hero.alt": "Портрет LEHA NEPLOXO",
-    "about.alt": "Фото LEHA NEPLOXO для розділу About",
+    "hero.alt": "Портрет Лехи Неплохо (LEHA NEPLOXO)",
+    "about.alt": "Фото Лехи Неплохо (LEHA NEPLOXO)",
 
     "services.label": "SERVICES",
     "services.title": "Розробка на замовлення",
@@ -107,7 +107,9 @@ window.SITE_I18N = {
     "projects.lehagame.desc.long": "Ласкаво просимо до LEHA NEPLOXO WORLD — сонячного неонового мегаполіса біля океану з повністю відкритим світом. Кожен, кого ти зустрічаєш на вулицях, — реальний гравець. Купуй квартири й будинки, заробляй і будуй свій статок. Вступай на службу в поліцію, рятуй життя у швидкій допомозі або гаси пожежі разом із командою. Ганяй набережною, відпочивай на пляжі, заводь друзів чи ворогів. Ким станеш ти — вирішувати тільки тобі. Грай прямо в браузері, нічого не завантажуючи.",
     "projects.lehagame.cta": "ГРАТИ",
 
-    "meta.introTag": "Cinematic personal brand"
+    "meta.introTag": "Cinematic personal brand",
+    "meta.description": "Офіційний сайт Лехи Неплохо (Льоха Неплохо, LEHA NEPLOXO): блогер і розробник. Сайти, програми, боти та ШІ-рішення на замовлення, онлайн-гра LEHA NEPLOXO WORLD і соцмережі.",
+    "meta.title": "Леха Неплохо (LEHA NEPLOXO) — блогер, розробник сайтів та ігор"
   },
 
   ru: {
@@ -126,11 +128,11 @@ window.SITE_I18N = {
     "hero.scroll": "Scroll",
 
     "about.label": "ABOUT",
-    "about.title": "Кто такой LEHA NEPLOXO",
-    "about.intro": "Автор, контент-мейкер и человек за кадром. Занимаюсь разработкой — создаю сайты, программы и ботов под задачи бизнеса и людей.",
+    "about.title": "Кто такой Леха Неплохо",
+    "about.intro": "Леха Неплохо (LEHA NEPLOXO) — автор, контент-мейкер и человек за кадром. Занимаюсь разработкой — создаю сайты, программы и ботов под задачи бизнеса и людей.",
     "about.note": "Услуги разработки ↓",
-    "hero.alt": "Портрет LEHA NEPLOXO",
-    "about.alt": "Фото LEHA NEPLOXO для раздела About",
+    "hero.alt": "Портрет Лехи Неплохо (LEHA NEPLOXO)",
+    "about.alt": "Фото Лехи Неплохо (LEHA NEPLOXO)",
 
     "services.label": "SERVICES",
     "services.title": "Разработка на заказ",
@@ -212,7 +214,9 @@ window.SITE_I18N = {
     "projects.lehagame.desc.long": "Добро пожаловать в LEHA NEPLOXO WORLD — солнечный неоновый мегаполис у океана с полностью открытым миром. Каждый, кого ты встречаешь на улицах, — реальный игрок. Покупай квартиры и дома, зарабатывай и строй своё состояние. Поступай на службу в полицию, спасай жизни в скорой помощи или туши пожары вместе с командой. Гоняй по набережной, отдыхай на пляже, заводи друзей или врагов. Кем станешь ты — решать только тебе. Играй прямо в браузере, ничего не скачивая.",
     "projects.lehagame.cta": "ИГРАТЬ",
 
-    "meta.introTag": "Cinematic personal brand"
+    "meta.introTag": "Cinematic personal brand",
+    "meta.description": "Официальный сайт Лехи Неплохо (LEHA NEPLOXO): блогер и разработчик. Сайты, программы, боты и ИИ-решения на заказ, онлайн-игра LEHA NEPLOXO WORLD и соцсети.",
+    "meta.title": "Леха Неплохо (LEHA NEPLOXO) — блогер, разработчик сайтов и игр"
   },
 
   en: {
@@ -234,8 +238,8 @@ window.SITE_I18N = {
     "about.title": "Who is LEHA NEPLOXO",
     "about.intro": "Author, content creator and the person behind the camera. I also work as a developer — building websites, programs and bots for businesses and people.",
     "about.note": "Development services ↓",
-    "hero.alt": "Portrait of LEHA NEPLOXO",
-    "about.alt": "Photo of LEHA NEPLOXO for the About section",
+    "hero.alt": "Portrait of LEHA NEPLOXO (Leha Neploxo)",
+    "about.alt": "Photo of LEHA NEPLOXO (Leha Neploxo)",
 
     "services.label": "SERVICES",
     "services.title": "Development on demand",
@@ -317,7 +321,9 @@ window.SITE_I18N = {
     "projects.lehagame.desc.long": "Welcome to LEHA NEPLOXO WORLD — a sunny neon metropolis by the ocean with a fully open world. Everyone you meet on the streets is a real player. Buy apartments and houses, make money and build your fortune. Join the police, save lives as a paramedic or fight fires with your crew. Cruise the boulevard, chill on the beach, make friends or enemies. Who you become is entirely up to you. Play right in your browser — no download needed.",
     "projects.lehagame.cta": "PLAY NOW",
 
-    "meta.introTag": "Cinematic personal brand"
+    "meta.introTag": "Cinematic personal brand",
+    "meta.description": "Official site of LEHA NEPLOXO (Leha Neploxo, Леха Неплохо): content creator and developer. Websites, programs, bots and AI solutions on demand, the online game LEHA NEPLOXO WORLD and socials.",
+    "meta.title": "LEHA NEPLOXO (Leha Neploxo) — content creator & web developer"
   }
 };
 

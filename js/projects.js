@@ -5,6 +5,9 @@
 (function () {
   "use strict";
 
+  /* "../" on the /ua/ and /en/ home pages, empty everywhere else */
+  var BASE = window.SITE_BASE || "";
+
   var ARROW = '<svg viewBox="0 0 24 24" fill="none"><path d="M5 19L19 5M19 5H8M19 5V16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
   function mediaMarkup(project, cls, alt) {
@@ -12,9 +15,9 @@
       return '<div class="' + cls + ' cyber-visual"><span class="cyber-visual__grid"></span><span class="cyber-visual__glyphs">01</span></div>';
     }
     if (project.video) {
-      return '<video class="' + cls + '" src="' + project.video + '" poster="' + project.image + '" muted loop playsinline preload="metadata"></video>';
+      return '<video class="' + cls + '" src="' + BASE + project.video + '" poster="' + BASE + project.image + '" muted loop playsinline preload="metadata"></video>';
     }
-    return '<img class="' + cls + '" src="' + project.image + '" alt="' + (alt || "") + '" loading="lazy">';
+    return '<img class="' + cls + '" src="' + BASE + project.image + '" alt="' + (alt || "") + '" loading="lazy">';
   }
 
   function cardHTML(project, i) {
@@ -26,7 +29,7 @@
     var badge = /^\d+$/.test(project.id) ? "0" + project.id : "";
     var linkAttrs = project.externalUrl
       ? 'href="' + project.externalUrl + '" target="_blank" rel="noopener"'
-      : 'href="project.html?id=' + project.id + '"';
+      : 'href="' + BASE + 'project.html?id=' + project.id + '"';
     return (
       '<article class="pcard" data-reveal="scale" style="transition-delay:' + (i * 90) + 'ms">' +
         (badge ? '<div class="pcard__index">' + badge + '</div>' : "") +

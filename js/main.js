@@ -13,7 +13,24 @@
   function qs(sel, ctx) { return (ctx || document).querySelector(sel); }
   function qsa(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
 
+  /* Home page is pre-rendered per language (/, /ua/, /en/ — see tools/build-langs.js);
+     there the url decides the language, not the browser. */
+  var PAGE_LANG = document.documentElement.getAttribute("data-page-lang");
+  var LANG_URLS = { ru: "/", ua: "/ua/", en: "/en/" };
+
+  /* a visitor who picked UA/EN before lands on the root page -> send them to their version */
+  if (PAGE_LANG === "ru" && location.protocol !== "file:") {
+    try {
+      var picked = localStorage.getItem("leha_lang");
+      if (picked && picked !== "ru" && LANG_URLS[picked]) {
+        location.replace(LANG_URLS[picked] + location.hash);
+        return;
+      }
+    } catch (e) {}
+  }
+
   function detectLang() {
+    if (PAGE_LANG) return PAGE_LANG;
     try {
       var saved = localStorage.getItem("leha_lang");
       if (saved && LANGS.indexOf(saved) !== -1) return saved;
@@ -72,8 +89,12 @@
 
   function setLang(lang) {
     if (LANGS.indexOf(lang) === -1) return;
-    state.lang = lang;
     try { localStorage.setItem("leha_lang", lang); } catch (e) {}
+    if (PAGE_LANG && lang !== PAGE_LANG && location.protocol !== "file:") {
+      location.href = LANG_URLS[lang] + location.hash;
+      return;
+    }
+    state.lang = lang;
     applyTranslations();
   }
   window.setLang = setLang;

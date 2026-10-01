@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://lehaneploxo.com/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <lastmod>2026-10-01</lastmod>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://lehaneploxo.com/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://lehaneploxo.com/ua/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://lehaneploxo.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://lehaneploxo.com/"/>
+  </url>
+  <url>
+    <loc>https://lehaneploxo.com/ua/</loc>
+    <lastmod>2026-10-01</lastmod>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://lehaneploxo.com/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://lehaneploxo.com/ua/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://lehaneploxo.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://lehaneploxo.com/"/>
+  </url>
+  <url>
+    <loc>https://lehaneploxo.com/en/</loc>
+    <lastmod>2026-10-01</lastmod>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://lehaneploxo.com/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://lehaneploxo.com/ua/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://lehaneploxo.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://lehaneploxo.com/"/>
   </url>
   <url>
     <loc>https://lehaneploxo.com/project.html?id=cyber-biology</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
 </urlset>
