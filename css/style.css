@@ -1003,3 +1003,16 @@ body.world-body main[data-world-page] { display: flex; flex-direction: column; h
   .nav__logo { font-size: 14px; }
   .lang-switch__btn svg { display: none; }
 }
+
+/* ==========================================================================
+   v2 layout (2026-11)
+   ========================================================================== */
+  /* 2026-11 layout: socials right under the hero, tighter sections, Mono support card */
+  .section { padding-block: clamp(52px, 8vw, 120px); }
+  #socials { padding-top: clamp(40px, 6vw, 90px); }
+  .scard--support { border-color: var(--accent-dim); background: linear-gradient(180deg, rgba(217,180,106,.10), rgba(217,180,106,.03)); }
+  .scard__icon svg[style] { fill: none; }
+  .scard--support .scard__icon { color: var(--accent); }
+  .btn--heart { display: inline-flex; align-items: center; gap: 10px; }
+  .support__safe { display: inline-flex; align-items: center; gap: 6px; }
+  @media (min-width: 900px) { .socials__grid { grid-template-columns: repeat(3, 1fr); } }
